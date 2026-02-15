@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 4
+names: ['Bumper', 'Fuel', 'Fuels', 'fuel']
+
+roboflow:
+  workspace: just-testing-vision-object-detection
+  project: frc_pre_test_2026
+  version: 3
+  license: CC BY 4.0
+  url: https://app.roboflow.com/just-testing-vision-object-detection/frc_pre_test_2026/3
