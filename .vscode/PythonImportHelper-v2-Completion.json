@@ -306,7 +306,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "MODEL_PATH = 'models/best.pt'\nCAMERA_INDEX = 0\nCONFIDENCE_THRESHOLD = 0.45\n# --- NETWORK SETUP ---\nIS_SIMULATION = True   # Set to False when on the real Robot/Kangaroo\nTEAM_NUMBER = 2791       \n# --- ROBOT PHYSICAL CONSTANTS ---\nCAMERA_HFOV_DEG = 60.0         \nKNOWN_FUEL_DIAMETER_IN = 5.91  \nINCHES_TO_METERS = 0.0254",
+        "peekOfCode": "MODEL_PATH = 'models/best.pt'\nCAMERA_INDEX = 0\nCONFIDENCE_THRESHOLD = 0.65\n# --- NETWORK SETUP ---\nIS_SIMULATION = True   # Set to False when on the real Robot/Kangaroo\nTEAM_NUMBER = 2791       \n# --- ROBOT PHYSICAL CONSTANTS ---\nCAMERA_HFOV_DEG = 60.0         \nKNOWN_FUEL_DIAMETER_IN = 5.91  \nINCHES_TO_METERS = 0.0254",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -315,7 +315,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "CAMERA_INDEX = 0\nCONFIDENCE_THRESHOLD = 0.45\n# --- NETWORK SETUP ---\nIS_SIMULATION = True   # Set to False when on the real Robot/Kangaroo\nTEAM_NUMBER = 2791       \n# --- ROBOT PHYSICAL CONSTANTS ---\nCAMERA_HFOV_DEG = 60.0         \nKNOWN_FUEL_DIAMETER_IN = 5.91  \nINCHES_TO_METERS = 0.0254\n# --- RADAR SETTINGS ---",
+        "peekOfCode": "CAMERA_INDEX = 0\nCONFIDENCE_THRESHOLD = 0.65\n# --- NETWORK SETUP ---\nIS_SIMULATION = True   # Set to False when on the real Robot/Kangaroo\nTEAM_NUMBER = 2791       \n# --- ROBOT PHYSICAL CONSTANTS ---\nCAMERA_HFOV_DEG = 60.0         \nKNOWN_FUEL_DIAMETER_IN = 5.91  \nINCHES_TO_METERS = 0.0254\n# --- RADAR SETTINGS ---",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -324,7 +324,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "CONFIDENCE_THRESHOLD = 0.45\n# --- NETWORK SETUP ---\nIS_SIMULATION = True   # Set to False when on the real Robot/Kangaroo\nTEAM_NUMBER = 2791       \n# --- ROBOT PHYSICAL CONSTANTS ---\nCAMERA_HFOV_DEG = 60.0         \nKNOWN_FUEL_DIAMETER_IN = 5.91  \nINCHES_TO_METERS = 0.0254\n# --- RADAR SETTINGS ---\nRADAR_WIDTH = 500",
+        "peekOfCode": "CONFIDENCE_THRESHOLD = 0.65\n# --- NETWORK SETUP ---\nIS_SIMULATION = True   # Set to False when on the real Robot/Kangaroo\nTEAM_NUMBER = 2791       \n# --- ROBOT PHYSICAL CONSTANTS ---\nCAMERA_HFOV_DEG = 60.0         \nKNOWN_FUEL_DIAMETER_IN = 5.91  \nINCHES_TO_METERS = 0.0254\n# --- RADAR SETTINGS ---\nRADAR_WIDTH = 500",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -423,7 +423,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "sd = inst.getTable(\"SmartDashboard\") \ncv_table = inst.getTable(\"fuelCV\")    \npub_num = cv_table.getIntegerTopic(\"number_of_fuel\").publish()\npub_yaw = cv_table.getDoubleArrayTopic(\"yaw_radians\").publish()\npub_dist = cv_table.getDoubleArrayTopic(\"distance\").publish()\npub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuel/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuel/Angle\").publish()\n# Telemetry tracking for HUD",
+        "peekOfCode": "sd = inst.getTable(\"SmartDashboard\") \ncv_table = inst.getTable(\"fuelCV\")    \npub_num = cv_table.getIntegerTopic(\"number_of_fuel\").publish()\npub_yaw = cv_table.getDoubleArrayTopic(\"yaw_radians\").publish()\npub_dist = cv_table.getDoubleArrayTopic(\"distance\").publish()\npub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuelcv1/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuelcv1/Angle\").publish()\n# Telemetry tracking for HUD",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -432,7 +432,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "cv_table = inst.getTable(\"fuelCV\")    \npub_num = cv_table.getIntegerTopic(\"number_of_fuel\").publish()\npub_yaw = cv_table.getDoubleArrayTopic(\"yaw_radians\").publish()\npub_dist = cv_table.getDoubleArrayTopic(\"distance\").publish()\npub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuel/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuel/Angle\").publish()\n# Telemetry tracking for HUD\nsent_angle = 0.0",
+        "peekOfCode": "cv_table = inst.getTable(\"fuelCV\")    \npub_num = cv_table.getIntegerTopic(\"number_of_fuel\").publish()\npub_yaw = cv_table.getDoubleArrayTopic(\"yaw_radians\").publish()\npub_dist = cv_table.getDoubleArrayTopic(\"distance\").publish()\npub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuelcv1/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuelcv1/Angle\").publish()\n# Telemetry tracking for HUD\nsent_angle = 0.0",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -441,7 +441,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "pub_num = cv_table.getIntegerTopic(\"number_of_fuel\").publish()\npub_yaw = cv_table.getDoubleArrayTopic(\"yaw_radians\").publish()\npub_dist = cv_table.getDoubleArrayTopic(\"distance\").publish()\npub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuel/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuel/Angle\").publish()\n# Telemetry tracking for HUD\nsent_angle = 0.0\nsent_dist = 0.0",
+        "peekOfCode": "pub_num = cv_table.getIntegerTopic(\"number_of_fuel\").publish()\npub_yaw = cv_table.getDoubleArrayTopic(\"yaw_radians\").publish()\npub_dist = cv_table.getDoubleArrayTopic(\"distance\").publish()\npub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuelcv1/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuelcv1/Angle\").publish()\n# Telemetry tracking for HUD\nsent_angle = 0.0\nsent_dist = 0.0",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -450,7 +450,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "pub_yaw = cv_table.getDoubleArrayTopic(\"yaw_radians\").publish()\npub_dist = cv_table.getDoubleArrayTopic(\"distance\").publish()\npub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuel/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuel/Angle\").publish()\n# Telemetry tracking for HUD\nsent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"",
+        "peekOfCode": "pub_yaw = cv_table.getDoubleArrayTopic(\"yaw_radians\").publish()\npub_dist = cv_table.getDoubleArrayTopic(\"distance\").publish()\npub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuelcv1/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuelcv1/Angle\").publish()\n# Telemetry tracking for HUD\nsent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -459,7 +459,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "pub_dist = cv_table.getDoubleArrayTopic(\"distance\").publish()\npub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuel/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuel/Angle\").publish()\n# Telemetry tracking for HUD\nsent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)",
+        "peekOfCode": "pub_dist = cv_table.getDoubleArrayTopic(\"distance\").publish()\npub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuelcv1/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuelcv1/Angle\").publish()\n# Telemetry tracking for HUD\nsent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -468,7 +468,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "pub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuel/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuel/Angle\").publish()\n# Telemetry tracking for HUD\nsent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))",
+        "peekOfCode": "pub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuelcv1/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuelcv1/Angle\").publish()\n# Telemetry tracking for HUD\nsent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -477,7 +477,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "pub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuel/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuel/Angle\").publish()\n# Telemetry tracking for HUD\nsent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))\ndef create_radar_frame(detections, best_idx):",
+        "peekOfCode": "pub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuelcv1/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuelcv1/Angle\").publish()\n# Telemetry tracking for HUD\nsent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))\ndef create_radar_frame(detections, best_idx):",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -486,7 +486,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "pub_has_target = sd.getBooleanTopic(\"Fuel/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuel/Angle\").publish()\n# Telemetry tracking for HUD\nsent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))\ndef create_radar_frame(detections, best_idx):\n    radar = np.zeros((RADAR_HEIGHT, RADAR_WIDTH, 3), dtype=np.uint8)",
+        "peekOfCode": "pub_has_target = sd.getBooleanTopic(\"Fuelcv1/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuelcv1/Angle\").publish()\n# Telemetry tracking for HUD\nsent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))\ndef create_radar_frame(detections, best_idx):\n    radar = np.zeros((RADAR_HEIGHT, RADAR_WIDTH, 3), dtype=np.uint8)",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -495,7 +495,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "pub_target_angle = sd.getDoubleTopic(\"Fuel/Angle\").publish()\n# Telemetry tracking for HUD\nsent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))\ndef create_radar_frame(detections, best_idx):\n    radar = np.zeros((RADAR_HEIGHT, RADAR_WIDTH, 3), dtype=np.uint8)\n    origin_x, origin_y = RADAR_WIDTH // 2, RADAR_HEIGHT - 50",
+        "peekOfCode": "pub_target_angle = sd.getDoubleTopic(\"Fuelcv1/Angle\").publish()\n# Telemetry tracking for HUD\nsent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))\ndef create_radar_frame(detections, best_idx):\n    radar = np.zeros((RADAR_HEIGHT, RADAR_WIDTH, 3), dtype=np.uint8)\n    origin_x, origin_y = RADAR_WIDTH // 2, RADAR_HEIGHT - 50",
         "detail": "run_inference",
         "documentation": {}
     },
