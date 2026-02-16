@@ -297,7 +297,7 @@
         "kind": 2,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "def create_radar_frame(detections, best_idx):\n    \"\"\"Draws a top-down view using only OpenCV\"\"\"\n    # Create black background\n    radar = np.zeros((RADAR_HEIGHT, RADAR_WIDTH, 3), dtype=np.uint8)\n    # Robot origin (Bottom center)\n    origin_x = RADAR_WIDTH // 2\n    origin_y = RADAR_HEIGHT - 50\n    # Draw Robot (Green square)\n    cv2.rectangle(radar, (origin_x-10, origin_y-10), (origin_x+10, origin_y+10), (0, 255, 0), -1)\n    # Draw distance circles (every 50 inches)",
+        "peekOfCode": "def create_radar_frame(detections, best_idx):\n    radar = np.zeros((RADAR_HEIGHT, RADAR_WIDTH, 3), dtype=np.uint8)\n    origin_x, origin_y = RADAR_WIDTH // 2, RADAR_HEIGHT - 50\n    cv2.rectangle(radar, (origin_x-10, origin_y-10), (origin_x+10, origin_y+10), (0, 255, 0), -1)\n    for r in range(50, 250, 50):\n        cv2.circle(radar, (origin_x, origin_y), int(r * GRID_SCALE), (50, 50, 50), 1)\n    for i, d in enumerate(detections):\n        # Radar drawing still uses inches for display\n        px = int(origin_x - (d['y_in'] * GRID_SCALE)) # Y in code is side-to-side\n        py = int(origin_y - (d['x_in'] * GRID_SCALE)) # X in code is forward",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -306,7 +306,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "MODEL_PATH = 'models/best.pt'\nCAMERA_INDEX = 0\nCONFIDENCE_THRESHOLD = 0.45\n# --- NETWORK SETUP ---\nIS_SIMULATION = True   # Set to False when on the real Robot/Kangaroo\nTEAM_NUMBER = 2791       # Your FRC team number\n# --- ROBOT PHYSICAL CONSTANTS (Measure these!) ---\nCAMERA_HFOV_DEG = 60.0         \nKNOWN_FUEL_DIAMETER_IN = 5.91  \nINCHES_TO_METERS = 0.0254",
+        "peekOfCode": "MODEL_PATH = 'models/best.pt'\nCAMERA_INDEX = 0\nCONFIDENCE_THRESHOLD = 0.45\n# --- NETWORK SETUP ---\nIS_SIMULATION = True   # Set to False when on the real Robot/Kangaroo\nTEAM_NUMBER = 2791       \n# --- ROBOT PHYSICAL CONSTANTS ---\nCAMERA_HFOV_DEG = 60.0         \nKNOWN_FUEL_DIAMETER_IN = 5.91  \nINCHES_TO_METERS = 0.0254",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -315,7 +315,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "CAMERA_INDEX = 0\nCONFIDENCE_THRESHOLD = 0.45\n# --- NETWORK SETUP ---\nIS_SIMULATION = True   # Set to False when on the real Robot/Kangaroo\nTEAM_NUMBER = 2791       # Your FRC team number\n# --- ROBOT PHYSICAL CONSTANTS (Measure these!) ---\nCAMERA_HFOV_DEG = 60.0         \nKNOWN_FUEL_DIAMETER_IN = 5.91  \nINCHES_TO_METERS = 0.0254\n# --- RADAR SETTINGS ---",
+        "peekOfCode": "CAMERA_INDEX = 0\nCONFIDENCE_THRESHOLD = 0.45\n# --- NETWORK SETUP ---\nIS_SIMULATION = True   # Set to False when on the real Robot/Kangaroo\nTEAM_NUMBER = 2791       \n# --- ROBOT PHYSICAL CONSTANTS ---\nCAMERA_HFOV_DEG = 60.0         \nKNOWN_FUEL_DIAMETER_IN = 5.91  \nINCHES_TO_METERS = 0.0254\n# --- RADAR SETTINGS ---",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -324,7 +324,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "CONFIDENCE_THRESHOLD = 0.45\n# --- NETWORK SETUP ---\nIS_SIMULATION = True   # Set to False when on the real Robot/Kangaroo\nTEAM_NUMBER = 2791       # Your FRC team number\n# --- ROBOT PHYSICAL CONSTANTS (Measure these!) ---\nCAMERA_HFOV_DEG = 60.0         \nKNOWN_FUEL_DIAMETER_IN = 5.91  \nINCHES_TO_METERS = 0.0254\n# --- RADAR SETTINGS ---\nRADAR_WIDTH = 500",
+        "peekOfCode": "CONFIDENCE_THRESHOLD = 0.45\n# --- NETWORK SETUP ---\nIS_SIMULATION = True   # Set to False when on the real Robot/Kangaroo\nTEAM_NUMBER = 2791       \n# --- ROBOT PHYSICAL CONSTANTS ---\nCAMERA_HFOV_DEG = 60.0         \nKNOWN_FUEL_DIAMETER_IN = 5.91  \nINCHES_TO_METERS = 0.0254\n# --- RADAR SETTINGS ---\nRADAR_WIDTH = 500",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -333,7 +333,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "IS_SIMULATION = True   # Set to False when on the real Robot/Kangaroo\nTEAM_NUMBER = 2791       # Your FRC team number\n# --- ROBOT PHYSICAL CONSTANTS (Measure these!) ---\nCAMERA_HFOV_DEG = 60.0         \nKNOWN_FUEL_DIAMETER_IN = 5.91  \nINCHES_TO_METERS = 0.0254\n# --- RADAR SETTINGS ---\nRADAR_WIDTH = 500\nRADAR_HEIGHT = 500\nGRID_SCALE = 4.0 # Pixels per inch",
+        "peekOfCode": "IS_SIMULATION = True   # Set to False when on the real Robot/Kangaroo\nTEAM_NUMBER = 2791       \n# --- ROBOT PHYSICAL CONSTANTS ---\nCAMERA_HFOV_DEG = 60.0         \nKNOWN_FUEL_DIAMETER_IN = 5.91  \nINCHES_TO_METERS = 0.0254\n# --- RADAR SETTINGS ---\nRADAR_WIDTH = 500\nRADAR_HEIGHT = 500\nGRID_SCALE = 4.0 ",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -342,7 +342,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "TEAM_NUMBER = 2791       # Your FRC team number\n# --- ROBOT PHYSICAL CONSTANTS (Measure these!) ---\nCAMERA_HFOV_DEG = 60.0         \nKNOWN_FUEL_DIAMETER_IN = 5.91  \nINCHES_TO_METERS = 0.0254\n# --- RADAR SETTINGS ---\nRADAR_WIDTH = 500\nRADAR_HEIGHT = 500\nGRID_SCALE = 4.0 # Pixels per inch\n# ==========================================",
+        "peekOfCode": "TEAM_NUMBER = 2791       \n# --- ROBOT PHYSICAL CONSTANTS ---\nCAMERA_HFOV_DEG = 60.0         \nKNOWN_FUEL_DIAMETER_IN = 5.91  \nINCHES_TO_METERS = 0.0254\n# --- RADAR SETTINGS ---\nRADAR_WIDTH = 500\nRADAR_HEIGHT = 500\nGRID_SCALE = 4.0 \n# ==========================================",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -351,7 +351,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "CAMERA_HFOV_DEG = 60.0         \nKNOWN_FUEL_DIAMETER_IN = 5.91  \nINCHES_TO_METERS = 0.0254\n# --- RADAR SETTINGS ---\nRADAR_WIDTH = 500\nRADAR_HEIGHT = 500\nGRID_SCALE = 4.0 # Pixels per inch\n# ==========================================\n# INITIALIZATION\n# ==========================================",
+        "peekOfCode": "CAMERA_HFOV_DEG = 60.0         \nKNOWN_FUEL_DIAMETER_IN = 5.91  \nINCHES_TO_METERS = 0.0254\n# --- RADAR SETTINGS ---\nRADAR_WIDTH = 500\nRADAR_HEIGHT = 500\nGRID_SCALE = 4.0 \n# ==========================================\n# INITIALIZATION\n# ==========================================",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -360,7 +360,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "KNOWN_FUEL_DIAMETER_IN = 5.91  \nINCHES_TO_METERS = 0.0254\n# --- RADAR SETTINGS ---\nRADAR_WIDTH = 500\nRADAR_HEIGHT = 500\nGRID_SCALE = 4.0 # Pixels per inch\n# ==========================================\n# INITIALIZATION\n# ==========================================\nprint(\"Starting FRC Vision System (OpenCV Mode)...\")",
+        "peekOfCode": "KNOWN_FUEL_DIAMETER_IN = 5.91  \nINCHES_TO_METERS = 0.0254\n# --- RADAR SETTINGS ---\nRADAR_WIDTH = 500\nRADAR_HEIGHT = 500\nGRID_SCALE = 4.0 \n# ==========================================\n# INITIALIZATION\n# ==========================================\nprint(\"Starting FRC Vision Master Script...\")",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -369,7 +369,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "INCHES_TO_METERS = 0.0254\n# --- RADAR SETTINGS ---\nRADAR_WIDTH = 500\nRADAR_HEIGHT = 500\nGRID_SCALE = 4.0 # Pixels per inch\n# ==========================================\n# INITIALIZATION\n# ==========================================\nprint(\"Starting FRC Vision System (OpenCV Mode)...\")\nmodel = YOLO(MODEL_PATH)",
+        "peekOfCode": "INCHES_TO_METERS = 0.0254\n# --- RADAR SETTINGS ---\nRADAR_WIDTH = 500\nRADAR_HEIGHT = 500\nGRID_SCALE = 4.0 \n# ==========================================\n# INITIALIZATION\n# ==========================================\nprint(\"Starting FRC Vision Master Script...\")\nmodel = YOLO(MODEL_PATH)",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -378,7 +378,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "RADAR_WIDTH = 500\nRADAR_HEIGHT = 500\nGRID_SCALE = 4.0 # Pixels per inch\n# ==========================================\n# INITIALIZATION\n# ==========================================\nprint(\"Starting FRC Vision System (OpenCV Mode)...\")\nmodel = YOLO(MODEL_PATH)\n# Initialize NetworkTables 4\ninst = ntcore.NetworkTableInstance.getDefault()",
+        "peekOfCode": "RADAR_WIDTH = 500\nRADAR_HEIGHT = 500\nGRID_SCALE = 4.0 \n# ==========================================\n# INITIALIZATION\n# ==========================================\nprint(\"Starting FRC Vision Master Script...\")\nmodel = YOLO(MODEL_PATH)\ninst = ntcore.NetworkTableInstance.getDefault()\nif IS_SIMULATION:",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -387,7 +387,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "RADAR_HEIGHT = 500\nGRID_SCALE = 4.0 # Pixels per inch\n# ==========================================\n# INITIALIZATION\n# ==========================================\nprint(\"Starting FRC Vision System (OpenCV Mode)...\")\nmodel = YOLO(MODEL_PATH)\n# Initialize NetworkTables 4\ninst = ntcore.NetworkTableInstance.getDefault()\nif IS_SIMULATION:",
+        "peekOfCode": "RADAR_HEIGHT = 500\nGRID_SCALE = 4.0 \n# ==========================================\n# INITIALIZATION\n# ==========================================\nprint(\"Starting FRC Vision Master Script...\")\nmodel = YOLO(MODEL_PATH)\ninst = ntcore.NetworkTableInstance.getDefault()\nif IS_SIMULATION:\n    inst.setServer(\"127.0.0.1\")",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -396,7 +396,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "GRID_SCALE = 4.0 # Pixels per inch\n# ==========================================\n# INITIALIZATION\n# ==========================================\nprint(\"Starting FRC Vision System (OpenCV Mode)...\")\nmodel = YOLO(MODEL_PATH)\n# Initialize NetworkTables 4\ninst = ntcore.NetworkTableInstance.getDefault()\nif IS_SIMULATION:\n    inst.setServer(\"127.0.0.1\")",
+        "peekOfCode": "GRID_SCALE = 4.0 \n# ==========================================\n# INITIALIZATION\n# ==========================================\nprint(\"Starting FRC Vision Master Script...\")\nmodel = YOLO(MODEL_PATH)\ninst = ntcore.NetworkTableInstance.getDefault()\nif IS_SIMULATION:\n    inst.setServer(\"127.0.0.1\")\nelse:",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -405,7 +405,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "model = YOLO(MODEL_PATH)\n# Initialize NetworkTables 4\ninst = ntcore.NetworkTableInstance.getDefault()\nif IS_SIMULATION:\n    inst.setServer(\"127.0.0.1\")\n    print(\"Connecting to local Simulation...\")\nelse:\n    inst.setServerTeam(TEAM_NUMBER)\n    print(f\"Connecting to Team {TEAM_NUMBER} Robot...\")\ninst.startClient4(\"KangarooVision\")",
+        "peekOfCode": "model = YOLO(MODEL_PATH)\ninst = ntcore.NetworkTableInstance.getDefault()\nif IS_SIMULATION:\n    inst.setServer(\"127.0.0.1\")\nelse:\n    inst.setServerTeam(TEAM_NUMBER)\ninst.startClient4(\"KangarooVision\")\nsd = inst.getTable(\"SmartDashboard\") \ncv_table = inst.getTable(\"fuelCV\")    \npub_num = cv_table.getIntegerTopic(\"number_of_fuel\").publish()",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -414,7 +414,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "inst = ntcore.NetworkTableInstance.getDefault()\nif IS_SIMULATION:\n    inst.setServer(\"127.0.0.1\")\n    print(\"Connecting to local Simulation...\")\nelse:\n    inst.setServerTeam(TEAM_NUMBER)\n    print(f\"Connecting to Team {TEAM_NUMBER} Robot...\")\ninst.startClient4(\"KangarooVision\")\n# Tables\nsd = inst.getTable(\"SmartDashboard\") ",
+        "peekOfCode": "inst = ntcore.NetworkTableInstance.getDefault()\nif IS_SIMULATION:\n    inst.setServer(\"127.0.0.1\")\nelse:\n    inst.setServerTeam(TEAM_NUMBER)\ninst.startClient4(\"KangarooVision\")\nsd = inst.getTable(\"SmartDashboard\") \ncv_table = inst.getTable(\"fuelCV\")    \npub_num = cv_table.getIntegerTopic(\"number_of_fuel\").publish()\npub_yaw = cv_table.getDoubleArrayTopic(\"yaw_radians\").publish()",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -423,7 +423,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "sd = inst.getTable(\"SmartDashboard\") \ncv_table = inst.getTable(\"fuelCV\")    \n# Publishers\npub_num = cv_table.getIntegerTopic(\"number_of_fuel\").publish()\npub_yaw = cv_table.getDoubleArrayTopic(\"yaw_radians\").publish()\npub_dist = cv_table.getDoubleArrayTopic(\"distance\").publish()\npub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuel/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuel/Angle\").publish()",
+        "peekOfCode": "sd = inst.getTable(\"SmartDashboard\") \ncv_table = inst.getTable(\"fuelCV\")    \npub_num = cv_table.getIntegerTopic(\"number_of_fuel\").publish()\npub_yaw = cv_table.getDoubleArrayTopic(\"yaw_radians\").publish()\npub_dist = cv_table.getDoubleArrayTopic(\"distance\").publish()\npub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuel/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuel/Angle\").publish()\n# Telemetry tracking for HUD",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -432,7 +432,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "cv_table = inst.getTable(\"fuelCV\")    \n# Publishers\npub_num = cv_table.getIntegerTopic(\"number_of_fuel\").publish()\npub_yaw = cv_table.getDoubleArrayTopic(\"yaw_radians\").publish()\npub_dist = cv_table.getDoubleArrayTopic(\"distance\").publish()\npub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuel/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuel/Angle\").publish()\n# NetworkTables connection tracking",
+        "peekOfCode": "cv_table = inst.getTable(\"fuelCV\")    \npub_num = cv_table.getIntegerTopic(\"number_of_fuel\").publish()\npub_yaw = cv_table.getDoubleArrayTopic(\"yaw_radians\").publish()\npub_dist = cv_table.getDoubleArrayTopic(\"distance\").publish()\npub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuel/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuel/Angle\").publish()\n# Telemetry tracking for HUD\nsent_angle = 0.0",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -441,7 +441,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "pub_num = cv_table.getIntegerTopic(\"number_of_fuel\").publish()\npub_yaw = cv_table.getDoubleArrayTopic(\"yaw_radians\").publish()\npub_dist = cv_table.getDoubleArrayTopic(\"distance\").publish()\npub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuel/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuel/Angle\").publish()\n# NetworkTables connection tracking\nnt_connected = False\nsent_angle = 0.0",
+        "peekOfCode": "pub_num = cv_table.getIntegerTopic(\"number_of_fuel\").publish()\npub_yaw = cv_table.getDoubleArrayTopic(\"yaw_radians\").publish()\npub_dist = cv_table.getDoubleArrayTopic(\"distance\").publish()\npub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuel/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuel/Angle\").publish()\n# Telemetry tracking for HUD\nsent_angle = 0.0\nsent_dist = 0.0",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -450,7 +450,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "pub_yaw = cv_table.getDoubleArrayTopic(\"yaw_radians\").publish()\npub_dist = cv_table.getDoubleArrayTopic(\"distance\").publish()\npub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuel/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuel/Angle\").publish()\n# NetworkTables connection tracking\nnt_connected = False\nsent_angle = 0.0\nsent_dist = 0.0",
+        "peekOfCode": "pub_yaw = cv_table.getDoubleArrayTopic(\"yaw_radians\").publish()\npub_dist = cv_table.getDoubleArrayTopic(\"distance\").publish()\npub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuel/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuel/Angle\").publish()\n# Telemetry tracking for HUD\nsent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -459,7 +459,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "pub_dist = cv_table.getDoubleArrayTopic(\"distance\").publish()\npub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuel/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuel/Angle\").publish()\n# NetworkTables connection tracking\nnt_connected = False\nsent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"",
+        "peekOfCode": "pub_dist = cv_table.getDoubleArrayTopic(\"distance\").publish()\npub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuel/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuel/Angle\").publish()\n# Telemetry tracking for HUD\nsent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -468,7 +468,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "pub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuel/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuel/Angle\").publish()\n# NetworkTables connection tracking\nnt_connected = False\nsent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)",
+        "peekOfCode": "pub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuel/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuel/Angle\").publish()\n# Telemetry tracking for HUD\nsent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -477,7 +477,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "pub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuel/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuel/Angle\").publish()\n# NetworkTables connection tracking\nnt_connected = False\nsent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))",
+        "peekOfCode": "pub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuel/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuel/Angle\").publish()\n# Telemetry tracking for HUD\nsent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))\ndef create_radar_frame(detections, best_idx):",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -486,7 +486,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "pub_has_target = sd.getBooleanTopic(\"Fuel/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuel/Angle\").publish()\n# NetworkTables connection tracking\nnt_connected = False\nsent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))\ndef create_radar_frame(detections, best_idx):",
+        "peekOfCode": "pub_has_target = sd.getBooleanTopic(\"Fuel/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuel/Angle\").publish()\n# Telemetry tracking for HUD\nsent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))\ndef create_radar_frame(detections, best_idx):\n    radar = np.zeros((RADAR_HEIGHT, RADAR_WIDTH, 3), dtype=np.uint8)",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -495,16 +495,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "pub_target_angle = sd.getDoubleTopic(\"Fuel/Angle\").publish()\n# NetworkTables connection tracking\nnt_connected = False\nsent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))\ndef create_radar_frame(detections, best_idx):\n    \"\"\"Draws a top-down view using only OpenCV\"\"\"",
-        "detail": "run_inference",
-        "documentation": {}
-    },
-    {
-        "label": "nt_connected",
-        "kind": 5,
-        "importPath": "run_inference",
-        "description": "run_inference",
-        "peekOfCode": "nt_connected = False\nsent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))\ndef create_radar_frame(detections, best_idx):\n    \"\"\"Draws a top-down view using only OpenCV\"\"\"\n    # Create black background\n    radar = np.zeros((RADAR_HEIGHT, RADAR_WIDTH, 3), dtype=np.uint8)",
+        "peekOfCode": "pub_target_angle = sd.getDoubleTopic(\"Fuel/Angle\").publish()\n# Telemetry tracking for HUD\nsent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))\ndef create_radar_frame(detections, best_idx):\n    radar = np.zeros((RADAR_HEIGHT, RADAR_WIDTH, 3), dtype=np.uint8)\n    origin_x, origin_y = RADAR_WIDTH // 2, RADAR_HEIGHT - 50",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -513,7 +504,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "sent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))\ndef create_radar_frame(detections, best_idx):\n    \"\"\"Draws a top-down view using only OpenCV\"\"\"\n    # Create black background\n    radar = np.zeros((RADAR_HEIGHT, RADAR_WIDTH, 3), dtype=np.uint8)\n    # Robot origin (Bottom center)",
+        "peekOfCode": "sent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))\ndef create_radar_frame(detections, best_idx):\n    radar = np.zeros((RADAR_HEIGHT, RADAR_WIDTH, 3), dtype=np.uint8)\n    origin_x, origin_y = RADAR_WIDTH // 2, RADAR_HEIGHT - 50\n    cv2.rectangle(radar, (origin_x-10, origin_y-10), (origin_x+10, origin_y+10), (0, 255, 0), -1)\n    for r in range(50, 250, 50):",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -522,7 +513,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "sent_dist = 0.0\ntarget_status = \"SEARCHING...\"\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))\ndef create_radar_frame(detections, best_idx):\n    \"\"\"Draws a top-down view using only OpenCV\"\"\"\n    # Create black background\n    radar = np.zeros((RADAR_HEIGHT, RADAR_WIDTH, 3), dtype=np.uint8)\n    # Robot origin (Bottom center)\n    origin_x = RADAR_WIDTH // 2",
+        "peekOfCode": "sent_dist = 0.0\ntarget_status = \"SEARCHING...\"\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))\ndef create_radar_frame(detections, best_idx):\n    radar = np.zeros((RADAR_HEIGHT, RADAR_WIDTH, 3), dtype=np.uint8)\n    origin_x, origin_y = RADAR_WIDTH // 2, RADAR_HEIGHT - 50\n    cv2.rectangle(radar, (origin_x-10, origin_y-10), (origin_x+10, origin_y+10), (0, 255, 0), -1)\n    for r in range(50, 250, 50):\n        cv2.circle(radar, (origin_x, origin_y), int(r * GRID_SCALE), (50, 50, 50), 1)",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -531,7 +522,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "target_status = \"SEARCHING...\"\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))\ndef create_radar_frame(detections, best_idx):\n    \"\"\"Draws a top-down view using only OpenCV\"\"\"\n    # Create black background\n    radar = np.zeros((RADAR_HEIGHT, RADAR_WIDTH, 3), dtype=np.uint8)\n    # Robot origin (Bottom center)\n    origin_x = RADAR_WIDTH // 2\n    origin_y = RADAR_HEIGHT - 50",
+        "peekOfCode": "target_status = \"SEARCHING...\"\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))\ndef create_radar_frame(detections, best_idx):\n    radar = np.zeros((RADAR_HEIGHT, RADAR_WIDTH, 3), dtype=np.uint8)\n    origin_x, origin_y = RADAR_WIDTH // 2, RADAR_HEIGHT - 50\n    cv2.rectangle(radar, (origin_x-10, origin_y-10), (origin_x+10, origin_y+10), (0, 255, 0), -1)\n    for r in range(50, 250, 50):\n        cv2.circle(radar, (origin_x, origin_y), int(r * GRID_SCALE), (50, 50, 50), 1)\n    for i, d in enumerate(detections):",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -540,7 +531,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "cap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))\ndef create_radar_frame(detections, best_idx):\n    \"\"\"Draws a top-down view using only OpenCV\"\"\"\n    # Create black background\n    radar = np.zeros((RADAR_HEIGHT, RADAR_WIDTH, 3), dtype=np.uint8)\n    # Robot origin (Bottom center)\n    origin_x = RADAR_WIDTH // 2\n    origin_y = RADAR_HEIGHT - 50\n    # Draw Robot (Green square)",
+        "peekOfCode": "cap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))\ndef create_radar_frame(detections, best_idx):\n    radar = np.zeros((RADAR_HEIGHT, RADAR_WIDTH, 3), dtype=np.uint8)\n    origin_x, origin_y = RADAR_WIDTH // 2, RADAR_HEIGHT - 50\n    cv2.rectangle(radar, (origin_x-10, origin_y-10), (origin_x+10, origin_y+10), (0, 255, 0), -1)\n    for r in range(50, 250, 50):\n        cv2.circle(radar, (origin_x, origin_y), int(r * GRID_SCALE), (50, 50, 50), 1)\n    for i, d in enumerate(detections):\n        # Radar drawing still uses inches for display",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -549,7 +540,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "focal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))\ndef create_radar_frame(detections, best_idx):\n    \"\"\"Draws a top-down view using only OpenCV\"\"\"\n    # Create black background\n    radar = np.zeros((RADAR_HEIGHT, RADAR_WIDTH, 3), dtype=np.uint8)\n    # Robot origin (Bottom center)\n    origin_x = RADAR_WIDTH // 2\n    origin_y = RADAR_HEIGHT - 50\n    # Draw Robot (Green square)\n    cv2.rectangle(radar, (origin_x-10, origin_y-10), (origin_x+10, origin_y+10), (0, 255, 0), -1)",
+        "peekOfCode": "focal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))\ndef create_radar_frame(detections, best_idx):\n    radar = np.zeros((RADAR_HEIGHT, RADAR_WIDTH, 3), dtype=np.uint8)\n    origin_x, origin_y = RADAR_WIDTH // 2, RADAR_HEIGHT - 50\n    cv2.rectangle(radar, (origin_x-10, origin_y-10), (origin_x+10, origin_y+10), (0, 255, 0), -1)\n    for r in range(50, 250, 50):\n        cv2.circle(radar, (origin_x, origin_y), int(r * GRID_SCALE), (50, 50, 50), 1)\n    for i, d in enumerate(detections):\n        # Radar drawing still uses inches for display\n        px = int(origin_x - (d['y_in'] * GRID_SCALE)) # Y in code is side-to-side",
         "detail": "run_inference",
         "documentation": {}
     },
