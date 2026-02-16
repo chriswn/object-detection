@@ -56,6 +56,12 @@ pub_y = cv_table.getDoubleArrayTopic("ball_position_y").publish()
 pub_has_target = sd.getBooleanTopic("Fuel/HasTarget").publish()
 pub_target_angle = sd.getDoubleTopic("Fuel/Angle").publish()
 
+# NetworkTables connection tracking
+nt_connected = False
+sent_angle = 0.0
+sent_dist = 0.0
+target_status = "SEARCHING..."
+
 cap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)
 focal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))
 
@@ -142,17 +148,27 @@ while True:
         best_idx = np.argmin(costs)
 
     # 3. PUBLISH TO NETWORKTABLES
-    pub_num.set(len(xs_m))
-    pub_yaw.set(yaws)
-    pub_dist.set(dists)
-    pub_x.set(xs_m)
-    pub_y.set(ys_m)
-
-    if best_idx != -1:
-        pub_has_target.set(True)
-        pub_target_angle.set(screen_detections[best_idx]['angle'])
-    else:
-        pub_has_target.set(False)
+    try:
+        pub_num.set(len(xs_m))
+        pub_yaw.set(yaws)
+        pub_dist.set(dists)
+        pub_x.set(xs_m)
+        pub_y.set(ys_m)
+        
+        if best_idx != -1:
+            pub_has_target.set(True)
+            pub_target_angle.set(screen_detections[best_idx]['angle'])
+            sent_angle = screen_detections[best_idx]['angle']
+            sent_dist = screen_detections[best_idx]['dist']
+            target_status = "TARGET LOCKED"
+        else:
+            pub_has_target.set(False)
+            target_status = "SEARCHING..."
+        
+        nt_connected = True
+    except Exception as e:
+        nt_connected = False
+        print(f"NetworkTables error: {e}")
 
     # 4. DRAWING
     for i, d in enumerate(screen_detections):
@@ -162,6 +178,26 @@ while True:
         label = "TARGET" if i == best_idx else "FUEL"
         cv2.putText(frame, f"{label} {d['dist']:.0f}in", (x1, y1-5), 0, 0.5, color, 1)
 
+    # 4. DRAW HUD (Connection & Telemetry)
+    # Draw a semi-transparent background box for text
+    cv2.rectangle(frame, (0, 0), (280, 110), (0, 0, 0), -1)
+    
+    # Connection Indicator
+    conn_text = "CONNECTED" if nt_connected else "DISCONNECTED"
+    conn_color = (0, 255, 0) if nt_connected else (0, 0, 255)  # Green if good, Red if bad
+    mode_text = "SIM" if IS_SIMULATION else f"TEAM {TEAM_NUMBER}"
+    
+    cv2.putText(frame, f"NT4 {mode_text}: {conn_text}", (10, 25), 
+                cv2.FONT_HERSHEY_SIMPLEX, 0.6, conn_color, 2)
+    
+    # Telemetry Data
+    cv2.putText(frame, f"STATUS: {target_status}", (10, 50), 
+                cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
+    cv2.putText(frame, f"SENT ANGLE: {sent_angle:.2f} deg", (10, 70), 
+                cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
+    cv2.putText(frame, f"SENT DIST : {sent_dist:.2f} in", (10, 90), 
+                cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
+    
     # Show Camera and Radar
     radar_frame = create_radar_frame(screen_detections, best_idx)
     

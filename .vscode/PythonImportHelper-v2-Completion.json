@@ -432,7 +432,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "cv_table = inst.getTable(\"fuelCV\")    \n# Publishers\npub_num = cv_table.getIntegerTopic(\"number_of_fuel\").publish()\npub_yaw = cv_table.getDoubleArrayTopic(\"yaw_radians\").publish()\npub_dist = cv_table.getDoubleArrayTopic(\"distance\").publish()\npub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuel/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuel/Angle\").publish()\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)",
+        "peekOfCode": "cv_table = inst.getTable(\"fuelCV\")    \n# Publishers\npub_num = cv_table.getIntegerTopic(\"number_of_fuel\").publish()\npub_yaw = cv_table.getDoubleArrayTopic(\"yaw_radians\").publish()\npub_dist = cv_table.getDoubleArrayTopic(\"distance\").publish()\npub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuel/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuel/Angle\").publish()\n# NetworkTables connection tracking",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -441,7 +441,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "pub_num = cv_table.getIntegerTopic(\"number_of_fuel\").publish()\npub_yaw = cv_table.getDoubleArrayTopic(\"yaw_radians\").publish()\npub_dist = cv_table.getDoubleArrayTopic(\"distance\").publish()\npub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuel/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuel/Angle\").publish()\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))\ndef create_radar_frame(detections, best_idx):",
+        "peekOfCode": "pub_num = cv_table.getIntegerTopic(\"number_of_fuel\").publish()\npub_yaw = cv_table.getDoubleArrayTopic(\"yaw_radians\").publish()\npub_dist = cv_table.getDoubleArrayTopic(\"distance\").publish()\npub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuel/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuel/Angle\").publish()\n# NetworkTables connection tracking\nnt_connected = False\nsent_angle = 0.0",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -450,7 +450,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "pub_yaw = cv_table.getDoubleArrayTopic(\"yaw_radians\").publish()\npub_dist = cv_table.getDoubleArrayTopic(\"distance\").publish()\npub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuel/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuel/Angle\").publish()\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))\ndef create_radar_frame(detections, best_idx):\n    \"\"\"Draws a top-down view using only OpenCV\"\"\"",
+        "peekOfCode": "pub_yaw = cv_table.getDoubleArrayTopic(\"yaw_radians\").publish()\npub_dist = cv_table.getDoubleArrayTopic(\"distance\").publish()\npub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuel/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuel/Angle\").publish()\n# NetworkTables connection tracking\nnt_connected = False\nsent_angle = 0.0\nsent_dist = 0.0",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -459,7 +459,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "pub_dist = cv_table.getDoubleArrayTopic(\"distance\").publish()\npub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuel/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuel/Angle\").publish()\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))\ndef create_radar_frame(detections, best_idx):\n    \"\"\"Draws a top-down view using only OpenCV\"\"\"\n    # Create black background",
+        "peekOfCode": "pub_dist = cv_table.getDoubleArrayTopic(\"distance\").publish()\npub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuel/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuel/Angle\").publish()\n# NetworkTables connection tracking\nnt_connected = False\nsent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -468,7 +468,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "pub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuel/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuel/Angle\").publish()\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))\ndef create_radar_frame(detections, best_idx):\n    \"\"\"Draws a top-down view using only OpenCV\"\"\"\n    # Create black background\n    radar = np.zeros((RADAR_HEIGHT, RADAR_WIDTH, 3), dtype=np.uint8)",
+        "peekOfCode": "pub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuel/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuel/Angle\").publish()\n# NetworkTables connection tracking\nnt_connected = False\nsent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -477,7 +477,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "pub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuel/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuel/Angle\").publish()\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))\ndef create_radar_frame(detections, best_idx):\n    \"\"\"Draws a top-down view using only OpenCV\"\"\"\n    # Create black background\n    radar = np.zeros((RADAR_HEIGHT, RADAR_WIDTH, 3), dtype=np.uint8)\n    # Robot origin (Bottom center)",
+        "peekOfCode": "pub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuel/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuel/Angle\").publish()\n# NetworkTables connection tracking\nnt_connected = False\nsent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -486,7 +486,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "pub_has_target = sd.getBooleanTopic(\"Fuel/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuel/Angle\").publish()\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))\ndef create_radar_frame(detections, best_idx):\n    \"\"\"Draws a top-down view using only OpenCV\"\"\"\n    # Create black background\n    radar = np.zeros((RADAR_HEIGHT, RADAR_WIDTH, 3), dtype=np.uint8)\n    # Robot origin (Bottom center)\n    origin_x = RADAR_WIDTH // 2",
+        "peekOfCode": "pub_has_target = sd.getBooleanTopic(\"Fuel/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuel/Angle\").publish()\n# NetworkTables connection tracking\nnt_connected = False\nsent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))\ndef create_radar_frame(detections, best_idx):",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -495,7 +495,43 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "pub_target_angle = sd.getDoubleTopic(\"Fuel/Angle\").publish()\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))\ndef create_radar_frame(detections, best_idx):\n    \"\"\"Draws a top-down view using only OpenCV\"\"\"\n    # Create black background\n    radar = np.zeros((RADAR_HEIGHT, RADAR_WIDTH, 3), dtype=np.uint8)\n    # Robot origin (Bottom center)\n    origin_x = RADAR_WIDTH // 2\n    origin_y = RADAR_HEIGHT - 50",
+        "peekOfCode": "pub_target_angle = sd.getDoubleTopic(\"Fuel/Angle\").publish()\n# NetworkTables connection tracking\nnt_connected = False\nsent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))\ndef create_radar_frame(detections, best_idx):\n    \"\"\"Draws a top-down view using only OpenCV\"\"\"",
+        "detail": "run_inference",
+        "documentation": {}
+    },
+    {
+        "label": "nt_connected",
+        "kind": 5,
+        "importPath": "run_inference",
+        "description": "run_inference",
+        "peekOfCode": "nt_connected = False\nsent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))\ndef create_radar_frame(detections, best_idx):\n    \"\"\"Draws a top-down view using only OpenCV\"\"\"\n    # Create black background\n    radar = np.zeros((RADAR_HEIGHT, RADAR_WIDTH, 3), dtype=np.uint8)",
+        "detail": "run_inference",
+        "documentation": {}
+    },
+    {
+        "label": "sent_angle",
+        "kind": 5,
+        "importPath": "run_inference",
+        "description": "run_inference",
+        "peekOfCode": "sent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))\ndef create_radar_frame(detections, best_idx):\n    \"\"\"Draws a top-down view using only OpenCV\"\"\"\n    # Create black background\n    radar = np.zeros((RADAR_HEIGHT, RADAR_WIDTH, 3), dtype=np.uint8)\n    # Robot origin (Bottom center)",
+        "detail": "run_inference",
+        "documentation": {}
+    },
+    {
+        "label": "sent_dist",
+        "kind": 5,
+        "importPath": "run_inference",
+        "description": "run_inference",
+        "peekOfCode": "sent_dist = 0.0\ntarget_status = \"SEARCHING...\"\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))\ndef create_radar_frame(detections, best_idx):\n    \"\"\"Draws a top-down view using only OpenCV\"\"\"\n    # Create black background\n    radar = np.zeros((RADAR_HEIGHT, RADAR_WIDTH, 3), dtype=np.uint8)\n    # Robot origin (Bottom center)\n    origin_x = RADAR_WIDTH // 2",
+        "detail": "run_inference",
+        "documentation": {}
+    },
+    {
+        "label": "target_status",
+        "kind": 5,
+        "importPath": "run_inference",
+        "description": "run_inference",
+        "peekOfCode": "target_status = \"SEARCHING...\"\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))\ndef create_radar_frame(detections, best_idx):\n    \"\"\"Draws a top-down view using only OpenCV\"\"\"\n    # Create black background\n    radar = np.zeros((RADAR_HEIGHT, RADAR_WIDTH, 3), dtype=np.uint8)\n    # Robot origin (Bottom center)\n    origin_x = RADAR_WIDTH // 2\n    origin_y = RADAR_HEIGHT - 50",
         "detail": "run_inference",
         "documentation": {}
     },
