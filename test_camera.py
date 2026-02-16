@@ -13,7 +13,7 @@ def test_camera_index(index):
         cap = cv2.VideoCapture(index, cv2.CAP_DSHOW)  # Use DirectShow on Windows
         
         if not cap.isOpened():
-            print(f"❌ Could not open camera at index {index}.")
+            print(f" Could not open camera at index {index}.")
             cap.release()
             return False
         
@@ -21,12 +21,12 @@ def test_camera_index(index):
         
         ret, frame = cap.read()
         if not ret or frame is None:
-            print(f"❌ Camera opened at index {index}, but could not read a frame.")
+            print(f" Camera opened at index {index}, but could not read a frame.")
             cap.release()
             return False
         
-        print(f"✓ Successfully read frame: {frame.shape}")
-        print(f"✅ SUCCESS! Camera working at index {index}.")
+        print(f" Successfully read frame: {frame.shape}")
+        print(f" SUCCESS! Camera working at index {index}.")
         print("Press 'q' in the window to close the test.")
         print("Opening camera window...")
         
@@ -55,7 +55,7 @@ def test_camera_index(index):
         return True
         
     except Exception as e:
-        print(f"❌ Error testing camera {index}: {e}")
+        print(f" Error testing camera {index}: {e}")
         import traceback
         traceback.print_exc()
         return False
@@ -72,7 +72,7 @@ for i in range(3):  # Try indices 0, 1, 2
     
 if not found:
     print("\n" + "=" * 50)
-    print("❌ No working camera found!")
+    print(" No working camera found!")
     print("=" * 50)
     print("\nTroubleshooting tips:")
     print("1. Make sure your camera is physically connected")
@@ -81,5 +81,5 @@ if not found:
     print("4. Check Windows Camera app to verify camera works")
 else:
     print("\n" + "=" * 50)
-    print("✅ Camera test completed successfully!")
+    print(" Camera test completed successfully!")
     print("=" * 50)

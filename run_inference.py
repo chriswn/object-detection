@@ -1,226 +1,175 @@
 import cv2
 import numpy as np
 from ultralytics import YOLO
-from sklearn.cluster import DBSCAN
 import math
-from networktables import NetworkTables
+import ntcore
+import time
 
-# --- Configuration ---
+# ==========================================
+# CONFIGURATION
+# ==========================================
 MODEL_PATH = 'models/best.pt'
 CAMERA_INDEX = 0
 CONFIDENCE_THRESHOLD = 0.45
 
-# --- NetworkTables Setup (Set to False if testing on laptop without robot) ---
-ENABLE_NETWORKTABLES = False 
-ROBOT_IP = "10.0.0.2" # CHANGE THIS to your RoboRIO IP (e.g., 10.TE.AM.2)
+# --- NETWORK SETUP ---
+IS_SIMULATION = True   # Set to False when on the real Robot/Kangaroo
+TEAM_NUMBER = 2791       # Your FRC team number
 
-# --- Robot/Camera Constants ---
-CAMERA_HFOV_DEG = 60.0
-KNOWN_FUEL_DIAMETER_IN = 5.91
-FRAME_WIDTH = 640
-FRAME_HEIGHT = 480
+# --- ROBOT PHYSICAL CONSTANTS (Measure these!) ---
+CAMERA_HFOV_DEG = 60.0         
+KNOWN_FUEL_DIAMETER_IN = 5.91  
+INCHES_TO_METERS = 0.0254
 
-# --- Logic Settings ---
-CLUSTER_PROXIMITY_INCHES = 12.0
-MIN_BALLS_FOR_CLUSTER = 1
+# --- RADAR SETTINGS ---
+RADAR_WIDTH = 500
+RADAR_HEIGHT = 500
+GRID_SCALE = 4.0 # Pixels per inch
 
-# Priority Weights: How much we care about Distance vs. Angle
-# A higher angle weight means the robot prefers balls straight ahead over closer balls to the side.
-PRIORITY_ANGLE_WEIGHT = 0.1 
+# ==========================================
+# INITIALIZATION
+# ==========================================
+print("Starting FRC Vision System (OpenCV Mode)...")
+model = YOLO(MODEL_PATH)
 
-# --- Initialization ---
-print("=" * 60)
-print("FRC FUEL OBJECT DETECTION - STARTING")
-print("=" * 60)
-print(f"Loading model from {MODEL_PATH}...")
-try:
-    model = YOLO(MODEL_PATH)
-    print("✓ Model loaded successfully!")
-except Exception as e:
-    print(f"❌ Error loading model: {e}")
-    exit(1)
-
-# Initialize NetworkTables
-if ENABLE_NETWORKTABLES:
-    print(f"Connecting to NetworkTables at {ROBOT_IP}...")
-    NetworkTables.initialize(server=ROBOT_IP)
-    sd = NetworkTables.getTable("SmartDashboard")
-    print("✓ NetworkTables Initialized")
+# Initialize NetworkTables 4
+inst = ntcore.NetworkTableInstance.getDefault()
+if IS_SIMULATION:
+    inst.setServer("127.0.0.1")
+    print("Connecting to local Simulation...")
 else:
-    print("ℹ NetworkTables disabled (testing mode)")
+    inst.setServerTeam(TEAM_NUMBER)
+    print(f"Connecting to Team {TEAM_NUMBER} Robot...")
+inst.startClient4("KangarooVision")
 
-print(f"Opening camera {CAMERA_INDEX}...")
+# Tables
+sd = inst.getTable("SmartDashboard") 
+cv_table = inst.getTable("fuelCV")    
+
+# Publishers
+pub_num = cv_table.getIntegerTopic("number_of_fuel").publish()
+pub_yaw = cv_table.getDoubleArrayTopic("yaw_radians").publish()
+pub_dist = cv_table.getDoubleArrayTopic("distance").publish()
+pub_x = cv_table.getDoubleArrayTopic("ball_position_x").publish()
+pub_y = cv_table.getDoubleArrayTopic("ball_position_y").publish()
+
+pub_has_target = sd.getBooleanTopic("Fuel/HasTarget").publish()
+pub_target_angle = sd.getDoubleTopic("Fuel/Angle").publish()
+
 cap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)
-cap.set(cv2.CAP_PROP_FRAME_WIDTH, FRAME_WIDTH)
-cap.set(cv2.CAP_PROP_FRAME_HEIGHT, FRAME_HEIGHT)
+focal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))
 
-if not cap.isOpened():
-    print(f"❌ Could not open camera at index {CAMERA_INDEX}")
-    print("Try running test_camera.py first to verify your camera works")
-    exit(1)
-
-print("✓ Camera opened successfully!")
-
-# Focal Length Calculation
-focal_length_px = FRAME_WIDTH / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))
-print(f"✓ Focal length calculated: {focal_length_px:.2f} pixels")
-print("=" * 60)
-
-def draw_top_down_map(detections, best_target_index):
-    """
-    Creates a black window (radar view) showing the robot and detected balls.
-    """
-    # Create a blank black image (500x500 pixels)
-    map_img = np.zeros((500, 500, 3), dtype=np.uint8)
+def create_radar_frame(detections, best_idx):
+    """Draws a top-down view using only OpenCV"""
+    # Create black background
+    radar = np.zeros((RADAR_HEIGHT, RADAR_WIDTH, 3), dtype=np.uint8)
     
-    # Draw Robot (Green Triangle at bottom center)
-    center_x, center_y = 250, 480
-    robot_pts = np.array([[center_x, center_y], [center_x-20, center_y+40], [center_x+20, center_y+40]])
-    cv2.fillPoly(map_img, [robot_pts], (0, 255, 0))
+    # Robot origin (Bottom center)
+    origin_x = RADAR_WIDTH // 2
+    origin_y = RADAR_HEIGHT - 50
+
+    # Draw Robot (Green square)
+    cv2.rectangle(radar, (origin_x-10, origin_y-10), (origin_x+10, origin_y+10), (0, 255, 0), -1)
     
-    # Scale: 1 pixel = 0.5 inches
-    scale = 2.0 
+    # Draw distance circles (every 50 inches)
+    for r in range(50, 250, 50):
+        cv2.circle(radar, (origin_x, origin_y), int(r * GRID_SCALE), (50, 50, 50), 1)
 
-    for i, det in enumerate(detections):
-        # det = [x_dist, y_dist, pixel_x, pixel_y]
-        # X is Left/Right, Y is Forward
+    # Draw Balls
+    for i, d in enumerate(detections):
+        # Map inches to pixels
+        px = int(origin_x + (d['x'] * GRID_SCALE))
+        py = int(origin_y - (d['y'] * GRID_SCALE))
         
-        # Map X/Y to pixel coordinates
-        # Map X: Robot Center + (Real X * Scale)
-        map_x = int(center_x + (det[0] * scale))
-        # Map Y: Robot Center - (Real Y * Scale) (Minus because Y goes down in images)
-        map_y = int(center_y - (det[1] * scale))
-
-        # Determine color (Red for Priority, Cyan for others)
-        color = (0, 0, 255) if i == best_target_index else (255, 255, 0)
+        # Priority ball is Red, others are Yellow
+        color = (0, 0, 255) if i == best_idx else (0, 255, 255)
         
-        # Draw Ball
-        cv2.circle(map_img, (map_x, map_y), 5, color, -1)
-        
-        # Draw line to priority target
-        if i == best_target_index:
-            cv2.line(map_img, (center_x, center_y), (map_x, map_y), (0, 0, 255), 1)
+        if 0 < px < RADAR_WIDTH and 0 < py < RADAR_HEIGHT:
+            cv2.circle(radar, (px, py), 8, color, -1)
+            # Draw line to priority
+            if i == best_idx:
+                cv2.line(radar, (origin_x, origin_y), (px, py), (0, 0, 255), 1)
 
-    # Add text
-    cv2.putText(map_img, "2D RADAR VIEW", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
-    cv2.putText(map_img, "Grid: 50 inches", (10, 480), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (100, 100, 100), 1)
-    
-    return map_img
+    return radar
 
-print("\n🎥 CAMERA FEED STARTING...")
-print("Two windows should open:")
-print("  1. 'Camera Feed' - Shows detected objects")
-print("  2. '2D Radar' - Shows top-down view")
-print("\nPress 'q' in either window to quit.")
-print("=" * 60 + "\n")
+# ==========================================
+# MAIN LOOP
+# ==========================================
+print("Running. Press 'q' to quit.")
 
-frame_count = 0
 while True:
     ret, frame = cap.read()
-    if not ret:
-        print("❌ Failed to read frame from camera")
-        break
-
-    frame_count += 1
-    
-    # Print status every 30 frames (~1 second at 30fps)
-    if frame_count == 1:
-        print("✓ First frame captured - windows should now be visible!")
-    elif frame_count % 30 == 0:
-        print(f"Processing frame {frame_count}...")
+    if not ret: break
+    frame = cv2.resize(frame, (640, 480))
 
     results = model(frame, verbose=False)
     
-    # [x_dist_in, y_dist_in, pixel_x, pixel_y, angle_deg, distance_total]
-    current_frame_detections = [] 
+    # Lists for NetworkTable Arrays
+    yaws, dists, xs_m, ys_m = [], [], [], []
+    screen_detections = [] 
 
-    # --- 1. Process Raw Detections ---
+    # 1. PROCESS DETECTIONS
     for result in results:
-        boxes = result.boxes.cpu().numpy()
-        for box in boxes:
-            x1, y1, x2, y2 = map(int, box.xyxy[0])
-            conf = box.conf[0]
-            cls = int(box.cls[0])
-            name = model.names[cls]
+        for box in result.boxes:
+            x1, y1, x2, y2 = map(int, box.xyxy[0].cpu().numpy())
+            conf = box.conf[0].cpu().numpy()
+            name = model.names[int(box.cls[0])]
 
             if conf > CONFIDENCE_THRESHOLD and name.lower() in ['fuel', 'fuels', 'ball']:
+                cx = (x1 + x2) // 2
+                w_px = x2 - x1
+                
                 # Math
-                cx, cy = (x1 + x2) // 2, (y1 + y2) // 2
-                width = x2 - x1
+                yaw_rad = math.atan((cx - 320) / focal_length_px)
+                dist_in = (KNOWN_FUEL_DIAMETER_IN * focal_length_px) / w_px if w_px > 0 else 0
                 
-                # Angle & Distance
-                offset = cx - (FRAME_WIDTH / 2)
-                angle_rad = math.atan(offset / focal_length_px)
-                angle_deg = math.degrees(angle_rad)
+                # Relative Coordinates (Inches)
+                x_in = dist_in * math.sin(yaw_rad)
+                y_in = dist_in * math.cos(yaw_rad)
+
+                # Store for Java (Meters)
+                yaws.append(yaw_rad)
+                dists.append(dist_in * INCHES_TO_METERS)
+                xs_m.append(x_in * INCHES_TO_METERS)
+                ys_m.append(y_in * INCHES_TO_METERS)
                 
-                if width > 0:
-                    dist_total = (KNOWN_FUEL_DIAMETER_IN * focal_length_px) / width
-                else:
-                    dist_total = 0
+                screen_detections.append({'box': (x1,y1,x2,y2), 'dist': dist_in, 'angle': math.degrees(yaw_rad), 'x': x_in, 'y': y_in})
 
-                # Coordinates (Relative to Camera)
-                y_in = dist_total * math.cos(angle_rad) # Forward
-                x_in = dist_total * math.sin(angle_rad) # Right/Left
+    # 2. PRIORITY LOGIC
+    best_idx = -1
+    if screen_detections:
+        costs = [d['dist'] + (abs(d['angle']) * 0.2) for d in screen_detections]
+        best_idx = np.argmin(costs)
 
-                current_frame_detections.append([x_in, y_in, cx, cy, angle_deg, dist_total, x1, y1, x2, y2])
+    # 3. PUBLISH TO NETWORKTABLES
+    pub_num.set(len(xs_m))
+    pub_yaw.set(yaws)
+    pub_dist.set(dists)
+    pub_x.set(xs_m)
+    pub_y.set(ys_m)
 
-    # --- 2. Determine Priority Target ---
-    # We want the ball that minimizes: Distance + (Angle * Weight)
-    best_target_index = -1
-    lowest_cost = 99999.0
+    if best_idx != -1:
+        pub_has_target.set(True)
+        pub_target_angle.set(screen_detections[best_idx]['angle'])
+    else:
+        pub_has_target.set(False)
 
-    for i, det in enumerate(current_frame_detections):
-        dist = det[5]
-        angle = abs(det[4])
-        
-        # Calculate "Cost"
-        cost = dist + (angle * PRIORITY_ANGLE_WEIGHT)
-        
-        if cost < lowest_cost:
-            lowest_cost = cost
-            best_target_index = i
-
-    # --- 3. Draw on Camera Feed ---
-    for i, det in enumerate(current_frame_detections):
-        x1, y1, x2, y2 = det[6], det[7], det[8], det[9]
-        
-        # Red Box for Priority, Green for others
-        if i == best_target_index:
-            color = (0, 0, 255) # BGR: Red
-            label_prefix = "PRIORITY"
-        else:
-            color = (0, 255, 0) # BGR: Green
-            label_prefix = "Fuel"
-
+    # 4. DRAWING
+    for i, d in enumerate(screen_detections):
+        color = (0, 0, 255) if i == best_idx else (0, 255, 0)
+        x1, y1, x2, y2 = d['box']
         cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
-        cv2.putText(frame, f"{label_prefix}: {det[5]:.1f}in", (x1, y1 - 10), 
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+        label = "TARGET" if i == best_idx else "FUEL"
+        cv2.putText(frame, f"{label} {d['dist']:.0f}in", (x1, y1-5), 0, 0.5, color, 1)
 
-    # --- 4. Draw Top-Down Map ---
-    radar_view = draw_top_down_map(current_frame_detections, best_target_index)
-    cv2.imshow("2D Radar", radar_view)
+    # Show Camera and Radar
+    radar_frame = create_radar_frame(screen_detections, best_idx)
+    
+    cv2.imshow('Robot Camera', frame)
+    cv2.imshow('2D Radar Map', radar_frame)
 
-    # --- 5. Send to NetworkTables ---
-    if ENABLE_NETWORKTABLES and best_target_index != -1:
-        target = current_frame_detections[best_target_index]
-        # Sending: HasTarget, Forward Distance, Angle
-        sd.putBoolean("Fuel/HasTarget", True)
-        sd.putNumber("Fuel/Distance", target[5])
-        sd.putNumber("Fuel/Angle", target[4])
-        sd.putNumber("Fuel/X_Offset", target[0]) # Left/Right inches
-    elif ENABLE_NETWORKTABLES:
-        sd.putBoolean("Fuel/HasTarget", False)
-
-    cv2.imshow('Camera Feed', frame)
-
-    # Check for 'q' key press to quit
     if cv2.waitKey(1) & 0xFF == ord('q'):
-        print("\n✓ Shutting down...")
         break
 
-print("\n" + "=" * 60)
-print("CAMERA FEED STOPPED")
-print("=" * 60)
 cap.release()
 cv2.destroyAllWindows()
-print("✓ Cleanup complete. Goodbye!")

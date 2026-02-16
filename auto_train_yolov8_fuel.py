@@ -1,106 +1,182 @@
-import os
-import zipfile
-import shutil
+import cv2
+import numpy as np
 from ultralytics import YOLO
-import requests
+from sklearn.cluster import DBSCAN
+import math
+from networktables import NetworkTables
+import pygame
 
 # --- Configuration ---
+MODEL_PATH = 'models/best.pt'
+CAMERA_INDEX = 0
+CONFIDENCE_THRESHOLD = 0.45
 
-# 1. Dataset Source
-ROBOFLOW_ZIP_URL = None 
-# Use 'r' before the string to handle backslashes correctly in Windows
-LOCAL_ZIP_FILENAME = r"C:\Users\yemij\Downloads\FRC_pre_test_2026.v3i.yolov8.zip"
+# --- Robot/Camera Constants ---
+CAMERA_HFOV_DEG = 60.0
+KNOWN_FUEL_DIAMETER_IN = 5.91
+FRAME_WIDTH = 640
+FRAME_HEIGHT = 480
 
-# 2. Image Settings
-# This MUST match the 'Resize: Stretch to' value from Roboflow (640 for v3)
-IMAGE_SIZE_FOR_TRAINING = 640 
+# --- Dashboard Settings ---
+DASH_WIDTH = 1200
+DASH_HEIGHT = 600
+BG_COLOR = (30, 30, 30)
+TEXT_COLOR = (255, 255, 255)
+GRID_COLOR = (50, 50, 50)
 
-# 3. Training Parameters
-EPOCHS = 50 
-BATCH_SIZE = 8  # Keep small for CPU/Laptop. Increase to 16 if you have a GPU.
-TRAINING_RUN_NAME = 'frc_fuel_auto_train'
+# --- Initialization ---
+print("Initializing System...")
+model = YOLO(MODEL_PATH)
+cap = cv2.VideoCapture(CAMERA_INDEX)
+cap.set(cv2.CAP_PROP_FRAME_WIDTH, FRAME_WIDTH)
+cap.set(cv2.CAP_PROP_FRAME_HEIGHT, FRAME_HEIGHT)
+focal_length_px = FRAME_WIDTH / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))
 
-# 4. Directories (These were missing in your error)
-UNZIP_DIR = 'roboflow_dataset_extracted'
-MODELS_DIR = 'models'
+# Initialize Pygame
+pygame.init()
+screen = pygame.display.set_mode((DASH_WIDTH, DASH_HEIGHT))
+pygame.display.set_caption("FRC Fuel Detection Dashboard")
+clock = pygame.time.Clock()
+font_title = pygame.font.SysFont("Arial", 24, bold=True)
+font_text = pygame.font.SysFont("Arial", 18)
 
-# --- Functions ---
-
-def download_file(url, filename):
-    print(f"Attempting to download {url} to {filename}...")
-    try:
-        response = requests.get(url, stream=True)
-        response.raise_for_status()
-        with open(filename, 'wb') as f:
-            for chunk in response.iter_content(chunk_size=8192):
-                f.write(chunk)
-        print(f"Downloaded {filename} successfully.")
-        return True
-    except requests.exceptions.RequestException as e:
-        print(f"Error downloading file: {e}")
-        return False
-
-def find_data_yaml(directory):
-    for root, dirs, files in os.walk(directory):
-        if 'data.yaml' in files:
-            return os.path.join(root, 'data.yaml')
-    return None
-
-def main():
-    # --- Step 1: Locate and Unzip the dataset ---
-    zip_path = LOCAL_ZIP_FILENAME
+def draw_grid(surface, rect, scale=2.0):
+    """Draws a grid on a specific area of the screen"""
+    # Draw background for this panel
+    pygame.draw.rect(surface, (0, 0, 0), rect)
+    pygame.draw.rect(surface, (100, 100, 100), rect, 2) # Border
     
-    if not os.path.exists(zip_path):
-        print(f"Error: LOCAL ZIP file not found at: {zip_path}")
-        print("Please verify the path in the script matches your download location.")
-        return
+    # Grid lines (every 10 inches)
+    center_x = rect.centerx
+    bottom_y = rect.bottom - 20
+    
+    # Vertical lines
+    for i in range(-10, 11):
+        x = center_x + (i * 10 * scale)
+        if rect.left < x < rect.right:
+            pygame.draw.line(surface, GRID_COLOR, (x, rect.top), (x, rect.bottom))
+            
+    # Horizontal lines
+    for i in range(0, 20):
+        y = bottom_y - (i * 10 * scale)
+        if rect.top < y < rect.bottom:
+            pygame.draw.line(surface, GRID_COLOR, (rect.left, y), (rect.right, y))
 
-    print(f"\nUnzipping {zip_path} to {UNZIP_DIR}...")
-    os.makedirs(UNZIP_DIR, exist_ok=True)
-    try:
-        with zipfile.ZipFile(zip_path, 'r') as zip_ref:
-            zip_ref.extractall(UNZIP_DIR)
-        print("Dataset unzipped successfully.")
-    except Exception as e:
-        print(f"Error unzipping file: {e}")
-        return
+    # Draw Robot
+    robot_poly = [
+        (center_x, bottom_y),
+        (center_x - 15, bottom_y + 30),
+        (center_x + 15, bottom_y + 30)
+    ]
+    pygame.draw.polygon(surface, (0, 255, 0), robot_poly)
+    
+    return center_x, bottom_y
 
-    # --- Step 2: Find data.yaml ---
-    data_yaml_path = find_data_yaml(UNZIP_DIR)
-    if not data_yaml_path:
-        print(f"Error: data.yaml not found in {UNZIP_DIR}. Check dataset structure.")
-        return
-    print(f"Found data.yaml at: {data_yaml_path}")
+def cvimage_to_pygame(image):
+    """Converts OpenCV BGR image to Pygame RGB surface"""
+    image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    return pygame.image.frombuffer(image_rgb.tostring(), image_rgb.shape[1::-1], "RGB")
 
-    # --- Step 3: Train the YOLOv8 model ---
-    print(f"\nStarting YOLOv8 model local training on {data_yaml_path}...")
-    print(f"Training for {EPOCHS} epochs with image size {IMAGE_SIZE_FOR_TRAINING} and batch size {BATCH_SIZE}...")
-    try:
-        # Load a pre-trained YOLOv8n model
-        model = YOLO('yolov8n.pt') 
+# --- Main Loop ---
+running = True
+while running:
+    # 1. Handle Pygame Events
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_q:
+            running = False
 
-        results = model.train(data=data_yaml_path, 
-                              epochs=EPOCHS, 
-                              imgsz=IMAGE_SIZE_FOR_TRAINING, 
-                              batch=BATCH_SIZE,  
-                              name=TRAINING_RUN_NAME) 
+    # 2. Capture & Process Frame
+    ret, frame = cap.read()
+    if not ret: break
 
-        print("\nTraining complete!")
+    results = model(frame, verbose=False)
+    
+    # Store detections: [x_in, y_in, angle_deg, dist_total, bbox_coords]
+    detections = []
+    
+    # YOLO Processing
+    for result in results:
+        boxes = result.boxes.cpu().numpy()
+        for box in boxes:
+            x1, y1, x2, y2 = map(int, box.xyxy[0])
+            conf = box.conf[0]
+            cls = int(box.cls[0])
+            name = model.names[cls]
+
+            if conf > CONFIDENCE_THRESHOLD and name.lower() in ['fuel', 'fuels', 'ball']:
+                cx, cy = (x1 + x2) // 2, (y1 + y2) // 2
+                width = x2 - x1
+                offset = cx - (FRAME_WIDTH / 2)
+                angle_rad = math.atan(offset / focal_length_px)
+                angle_deg = math.degrees(angle_rad)
+                dist_total = (KNOWN_FUEL_DIAMETER_IN * focal_length_px) / width if width > 0 else 0
+                y_in = dist_total * math.cos(angle_rad)
+                x_in = dist_total * math.sin(angle_rad)
+                detections.append([x_in, y_in, angle_deg, dist_total, (x1, y1, x2, y2)])
+
+    # Determine Priority
+    best_idx = -1
+    lowest_cost = 9999.0
+    for i, det in enumerate(detections):
+        cost = det[3] + (abs(det[2]) * 0.1)
+        if cost < lowest_cost:
+            lowest_cost = cost
+            best_idx = i
+
+    # Draw boxes on Camera Frame
+    for i, det in enumerate(detections):
+        x1, y1, x2, y2 = det[4]
+        color = (0, 0, 255) if i == best_idx else (0, 255, 0) # Red or Green (BGR for OpenCV)
+        cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
+        cv2.putText(frame, f"{det[3]:.1f}in", (x1, y1-5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 1)
+
+    # --- 3. Draw Dashboard ---
+    screen.fill(BG_COLOR)
+
+    # Panel 1: Camera Feed (Left)
+    cam_surface = cvimage_to_pygame(frame)
+    # Scale camera feed to fit half screen
+    cam_surface = pygame.transform.scale(cam_surface, (DASH_WIDTH // 2 - 20, int(FRAME_HEIGHT * 0.8)))
+    screen.blit(cam_surface, (10, 50))
+    
+    # Header
+    title = font_title.render("FRC 2026 Fuel Detection System", True, (255, 255, 0))
+    screen.blit(title, (DASH_WIDTH//2 - title.get_width()//2, 10))
+
+    # Panel 2: 2D Radar / Overhead View (Right)
+    radar_rect = pygame.Rect(DASH_WIDTH // 2 + 10, 50, DASH_WIDTH // 2 - 20, int(FRAME_HEIGHT * 0.8))
+    origin_x, origin_y = draw_grid(screen, radar_rect, scale=3.0)
+    
+    # Title for Radar
+    radar_title = font_text.render("Overhead View (Robot-Relative)", True, TEXT_COLOR)
+    screen.blit(radar_title, (radar_rect.x, radar_rect.y - 25))
+
+    # Draw Balls on Radar
+    for i, det in enumerate(detections):
+        # det[0] is X (Left/Right), det[1] is Y (Forward)
+        # Map to screen pixels (scale=3.0)
+        px = origin_x + (det[0] * 3.0)
+        py = origin_y - (det[1] * 3.0)
         
-        # --- Step 4: Copy best.pt to the designated models folder ---
-        output_dir = results.save_dir 
-        best_model_path = os.path.join(output_dir, 'weights', 'best.pt')
+        # Color: Red if priority, Yellow otherwise
+        color = (255, 0, 0) if i == best_idx else (255, 255, 0)
         
-        os.makedirs(MODELS_DIR, exist_ok=True)
-        final_model_path = os.path.join(MODELS_DIR, 'best.pt')
+        # Draw dot
+        pygame.draw.circle(screen, color, (int(px), int(py)), 8)
+        
+        # Draw line to priority
+        if i == best_idx:
+            pygame.draw.line(screen, (255, 0, 0), (origin_x, origin_y), (int(px), int(py)), 2)
+            
+            # Display stats for priority target
+            stats_text = f"TARGET LOCKED: Dist: {det[3]:.1f}in  Angle: {det[2]:.1f} deg"
+            stats_surf = font_text.render(stats_text, True, (0, 255, 0))
+            screen.blit(stats_surf, (DASH_WIDTH // 2 + 20, radar_rect.bottom + 10))
 
-        shutil.copy(best_model_path, final_model_path)
-        print(f"Copied trained model (best.pt) to: {final_model_path}")
-        print("\nYour YOLOv8 model is ready for inference!")
+    pygame.display.flip()
+    clock.tick(30) # Limit to 30 FPS
 
-    except Exception as e:
-        print(f"An error occurred during training: {e}")
-        print("Check if you have enough memory or if the data.yaml path is correct.")
-
-if __name__ == "__main__":
-    main()
+cap.release()
+pygame.quit()
