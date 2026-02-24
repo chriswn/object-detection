@@ -1,5 +1,10 @@
 # Python: 3.14.2
+# Note: openvino-dev requires C++ compiler on Windows for Python 3.14
+# Use openvino (runtime only) for inference - no compilation needed
 ultralytics
 opencv-python
-numpy
+numpy>=1.24.0,<2.0.0
 pyntcore
+openvino>=2024.0.0
+scikit-learn  # For DBSCAN clustering (pile targeting)
+# openvino-dev  # Optional: Only for advanced model optimization

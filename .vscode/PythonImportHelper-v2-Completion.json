@@ -42,6 +42,14 @@
         "documentation": {}
     },
     {
+        "label": "DBSCAN",
+        "importPath": "sklearn.cluster",
+        "description": "sklearn.cluster",
+        "isExtraImport": true,
+        "detail": "sklearn.cluster",
+        "documentation": {}
+    },
+    {
         "label": "math",
         "kind": 6,
         "isExtraImport": true,
@@ -68,12 +76,21 @@
         "documentation": {}
     },
     {
-        "label": "ntcore",
+        "label": "sys",
         "kind": 6,
         "isExtraImport": true,
-        "importPath": "ntcore",
-        "description": "ntcore",
-        "detail": "ntcore",
+        "importPath": "sys",
+        "description": "sys",
+        "detail": "sys",
+        "documentation": {}
+    },
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
         "documentation": {}
     },
     {
@@ -86,12 +103,20 @@
         "documentation": {}
     },
     {
-        "label": "sys",
+        "label": "threading",
         "kind": 6,
         "isExtraImport": true,
-        "importPath": "sys",
-        "description": "sys",
-        "detail": "sys",
+        "importPath": "threading",
+        "description": "threading",
+        "detail": "threading",
+        "documentation": {}
+    },
+    {
+        "label": "Queue",
+        "importPath": "queue",
+        "description": "queue",
+        "isExtraImport": true,
+        "detail": "queue",
         "documentation": {}
     },
     {
@@ -293,11 +318,146 @@
         "documentation": {}
     },
     {
+        "label": "check_python_version",
+        "kind": 2,
+        "importPath": "diagnose_cherrytrail",
+        "description": "diagnose_cherrytrail",
+        "peekOfCode": "def check_python_version():\n    \"\"\"Verify Python 3.9+\"\"\"\n    print(\"=\" * 60)\n    print(\"PYTHON VERSION CHECK\")\n    print(\"=\" * 60)\n    version = sys.version_info\n    print(f\"Detected: Python {version.major}.{version.minor}.{version.micro}\")\n    if version.major < 3 or (version.major == 3 and version.minor < 9):\n        print(\"❌ FAILED: Python 3.9+ required\")\n        return False",
+        "detail": "diagnose_cherrytrail",
+        "documentation": {}
+    },
+    {
+        "label": "check_opencv",
+        "kind": 2,
+        "importPath": "diagnose_cherrytrail",
+        "description": "diagnose_cherrytrail",
+        "peekOfCode": "def check_opencv():\n    \"\"\"Verify OpenCV installation\"\"\"\n    print(\"\\n\" + \"=\" * 60)\n    print(\"OPENCV CHECK\")\n    print(\"=\" * 60)\n    try:\n        import cv2\n        print(f\"OpenCV version: {cv2.__version__}\")\n        # Check camera availability\n        cap = cv2.VideoCapture(0)",
+        "detail": "diagnose_cherrytrail",
+        "documentation": {}
+    },
+    {
+        "label": "check_openvino",
+        "kind": 2,
+        "importPath": "diagnose_cherrytrail",
+        "description": "diagnose_cherrytrail",
+        "peekOfCode": "def check_openvino():\n    \"\"\"Verify OpenVINO installation and GPU support\"\"\"\n    print(\"\\n\" + \"=\" * 60)\n    print(\"OPENVINO CHECK\")\n    print(\"=\" * 60)\n    try:\n        # OpenVINO 2026+ simplified imports\n        try:\n            from openvino.runtime import Core\n        except ImportError:",
+        "detail": "diagnose_cherrytrail",
+        "documentation": {}
+    },
+    {
+        "label": "check_pytorch",
+        "kind": 2,
+        "importPath": "diagnose_cherrytrail",
+        "description": "diagnose_cherrytrail",
+        "peekOfCode": "def check_pytorch():\n    \"\"\"Verify PyTorch (needed for model conversion)\"\"\"\n    print(\"\\n\" + \"=\" * 60)\n    print(\"PYTORCH CHECK\")\n    print(\"=\" * 60)\n    try:\n        import torch\n        print(f\"PyTorch version: {torch.__version__}\")\n        print(\"✓ PASSED: PyTorch installed (needed for model conversion)\")\n        return True",
+        "detail": "diagnose_cherrytrail",
+        "documentation": {}
+    },
+    {
+        "label": "check_ultralytics",
+        "kind": 2,
+        "importPath": "diagnose_cherrytrail",
+        "description": "diagnose_cherrytrail",
+        "peekOfCode": "def check_ultralytics():\n    \"\"\"Verify YOLOv8 installation\"\"\"\n    print(\"\\n\" + \"=\" * 60)\n    print(\"ULTRALYTICS (YOLOV8) CHECK\")\n    print(\"=\" * 60)\n    try:\n        from ultralytics import YOLO\n        print(\"✓ PASSED: YOLOv8 installed\")\n        return True\n    except ImportError as e:",
+        "detail": "diagnose_cherrytrail",
+        "documentation": {}
+    },
+    {
+        "label": "check_model_file",
+        "kind": 2,
+        "importPath": "diagnose_cherrytrail",
+        "description": "diagnose_cherrytrail",
+        "peekOfCode": "def check_model_file():\n    \"\"\"Check if best.pt exists\"\"\"\n    print(\"\\n\" + \"=\" * 60)\n    print(\"MODEL FILE CHECK\")\n    print(\"=\" * 60)\n    model_path = \"models/best.pt\"\n    if os.path.exists(model_path):\n        size_mb = os.path.getsize(model_path) / (1024 * 1024)\n        print(f\"✓ Found: {model_path} ({size_mb:.1f} MB)\")\n        return True",
+        "detail": "diagnose_cherrytrail",
+        "documentation": {}
+    },
+    {
+        "label": "check_openvino_model",
+        "kind": 2,
+        "importPath": "diagnose_cherrytrail",
+        "description": "diagnose_cherrytrail",
+        "peekOfCode": "def check_openvino_model():\n    \"\"\"Check if OpenVINO model exists\"\"\"\n    print(\"\\n\" + \"=\" * 60)\n    print(\"OPENVINO MODEL CHECK\")\n    print(\"=\" * 60)\n    ir_path = \"models/best_openvino_model/best.xml\"\n    if os.path.exists(ir_path):\n        print(f\"✓ Found: OpenVINO IR model\")\n        print(\"   (Will be used for inference)\")\n        return True",
+        "detail": "diagnose_cherrytrail",
+        "documentation": {}
+    },
+    {
+        "label": "check_pyntcore",
+        "kind": 2,
+        "importPath": "diagnose_cherrytrail",
+        "description": "diagnose_cherrytrail",
+        "peekOfCode": "def check_pyntcore():\n    \"\"\"Verify NetworkTables library\"\"\"\n    print(\"\\n\" + \"=\" * 60)\n    print(\"PYNTCORE (NETWORKTABLES) CHECK\")\n    print(\"=\" * 60)\n    try:\n        from ntcore import NetworkTableInstance\n        print(\"✓ PASSED: pyntcore installed\")\n        return True\n    except ImportError:",
+        "detail": "diagnose_cherrytrail",
+        "documentation": {}
+    },
+    {
+        "label": "test_inference_mock",
+        "kind": 2,
+        "importPath": "diagnose_cherrytrail",
+        "description": "diagnose_cherrytrail",
+        "peekOfCode": "def test_inference_mock():\n    \"\"\"Test basic inference without actual camera\"\"\"\n    print(\"\\n\" + \"=\" * 60)\n    print(\"INFERENCE PIPELINE TEST\")\n    print(\"=\" * 60)\n    try:\n        import numpy as np\n        try:\n            from openvino.runtime import Core\n        except ImportError:",
+        "detail": "diagnose_cherrytrail",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "diagnose_cherrytrail",
+        "description": "diagnose_cherrytrail",
+        "peekOfCode": "def main():\n    \"\"\"Run all diagnostics\"\"\"\n    print(\"\\n\" + \"🔍 \" * 20)\n    print(\"CHERRY TRAIL HARDWARE DIAGNOSTIC\")\n    print(\"Intel Atom x5-Z8500 Vision System\")\n    print(\"🔍 \" * 20 + \"\\n\")\n    checks = [\n        (\"Python Version\", check_python_version),\n        (\"Python Packages\", lambda: all([\n            check_opencv(),",
+        "detail": "diagnose_cherrytrail",
+        "documentation": {}
+    },
+    {
+        "label": "open_camera",
+        "kind": 2,
+        "importPath": "run_inference",
+        "description": "run_inference",
+        "peekOfCode": "def open_camera(index):\n    backend_candidates = []\n    if sys.platform.startswith(\"linux\"):\n        backend_candidates = [cv2.CAP_V4L2, cv2.CAP_ANY]\n    elif sys.platform.startswith(\"win\"):\n        backend_candidates = [cv2.CAP_DSHOW, cv2.CAP_MSMF, cv2.CAP_ANY]\n    else:\n        backend_candidates = [cv2.CAP_ANY]\n    for backend in backend_candidates:\n        cap_local = cv2.VideoCapture(index, backend)",
+        "detail": "run_inference",
+        "documentation": {}
+    },
+    {
+        "label": "infer_openvino",
+        "kind": 2,
+        "importPath": "run_inference",
+        "description": "run_inference",
+        "peekOfCode": "def infer_openvino(frame, infer_request, compiled_model, conf_threshold):\n    \"\"\"Synchronous OpenVINO inference. Returns boxes in YOLO format.\"\"\"\n    # Prepare input (YOLOv8 expects RGB, normalized to 0-1)\n    # Model expects 320x320, so resize to square with padding to avoid distortion\n    frame_resized = cv2.resize(frame, (320, 320))\n    # Convert BGR to RGB and normalize\n    frame_rgb = cv2.cvtColor(frame_resized, cv2.COLOR_BGR2RGB)\n    input_tensor = np.expand_dims(frame_rgb.transpose(2, 0, 1), 0).astype(np.float32) / 255.0\n    # Run inference (OpenVINO 2026 simplified API)\n    # Use index-based access instead of names",
+        "detail": "run_inference",
+        "documentation": {}
+    },
+    {
+        "label": "inference_worker",
+        "kind": 2,
+        "importPath": "run_inference",
+        "description": "run_inference",
+        "peekOfCode": "def inference_worker():\n    \"\"\"Background thread for async inference on Cherry Trail.\"\"\"\n    global latest_detections\n    while True:\n        try:\n            frame, frame_resized = inference_queue.get(timeout=1)\n            if frame is None:  # Sentinel value to stop thread\n                break\n            if USE_OPENVINO:\n                detections = infer_openvino(frame, infer_request, compiled_model, CONFIDENCE_FILTER)",
+        "detail": "run_inference",
+        "documentation": {}
+    },
+    {
         "label": "create_radar_frame",
         "kind": 2,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "def create_radar_frame(detections, best_idx):\n    radar = np.zeros((RADAR_HEIGHT, RADAR_WIDTH, 3), dtype=np.uint8)\n    origin_x, origin_y = RADAR_WIDTH // 2, RADAR_HEIGHT - 50\n    cv2.rectangle(radar, (origin_x-10, origin_y-10), (origin_x+10, origin_y+10), (0, 255, 0), -1)\n    for r in range(50, 250, 50):\n        cv2.circle(radar, (origin_x, origin_y), int(r * GRID_SCALE), (50, 50, 50), 1)\n    for i, d in enumerate(detections):\n        # Radar drawing still uses inches for display\n        px = int(origin_x - (d['y_in'] * GRID_SCALE)) # Y in code is side-to-side\n        py = int(origin_y - (d['x_in'] * GRID_SCALE)) # X in code is forward",
+        "peekOfCode": "def create_radar_frame(detections, best_idx):\n    radar = np.zeros((RADAR_HEIGHT, RADAR_WIDTH, 3), dtype=np.uint8)\n    origin_x, origin_y = RADAR_WIDTH // 2, RADAR_HEIGHT - 50\n    cv2.rectangle(radar, (origin_x-10, origin_y-10), (origin_x+10, origin_y+10), (0, 255, 0), -1)\n    for r in range(50, 250, 50):\n        cv2.circle(radar, (origin_x, origin_y), int(r * GRID_SCALE), (50, 50, 50), 1)\n    for i, d in enumerate(detections):\n        px = int(origin_x - (d['y_in'] * GRID_SCALE))\n        py = int(origin_y - (d['x_in'] * GRID_SCALE))\n        color = (0, 0, 255) if i == best_idx else (0, 255, 255)",
+        "detail": "run_inference",
+        "documentation": {}
+    },
+    {
+        "label": "process_detections",
+        "kind": 2,
+        "importPath": "run_inference",
+        "description": "run_inference",
+        "peekOfCode": "def process_detections(raw_detections, frame):\n    \"\"\"Convert raw detections to world coordinates (vectorized for speed).\"\"\"\n    if not raw_detections:\n        return [], [], [], [], [], []\n    # Pre-filter by confidence and class (vectorized check)\n    valid_detections = [\n        d for d in raw_detections\n        if d['conf'] > CONFIDENCE_FILTER and \n           model_names.get(d['class_id'], '').lower() in ['fuel', 'fuels', 'ball']\n    ]",
+        "detail": "run_inference",
+        "documentation": {}
+    },
+    {
+        "label": "find_best_pile",
+        "kind": 2,
+        "importPath": "run_inference",
+        "description": "run_inference",
+        "peekOfCode": "def find_best_pile(balls_in_inches):\n    \"\"\"Use DBSCAN clustering to find the best pile of balls.\"\"\"\n    if len(balls_in_inches) == 0:\n        return None, 0, 0.0\n    coords = np.array(balls_in_inches)\n    # Cluster balls within CLUSTER_RADIUS_IN inches\n    db = DBSCAN(eps=CLUSTER_RADIUS_IN, min_samples=1).fit(coords)\n    best_cluster_center = None\n    max_balls = 0\n    best_score = -999.0",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -306,7 +466,43 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "MODEL_PATH = 'models/best.pt'\nCAMERA_INDEX = 0\nCONFIDENCE_THRESHOLD = 0.65\n# --- NETWORK SETUP ---\nIS_SIMULATION = True   # Set to False when on the real Robot/Kangaroo\nTEAM_NUMBER = 2791       \n# --- ROBOT PHYSICAL CONSTANTS ---\nCAMERA_HFOV_DEG = 60.0         \nKNOWN_FUEL_DIAMETER_IN = 5.91  \nINCHES_TO_METERS = 0.0254",
+        "peekOfCode": "MODEL_PATH = 'models/best.pt'\nOPENVINO_MODEL_PATH = 'models/best_openvino_model'  # Will be generated if needed\nUSE_OPENVINO = True\nUSE_GPU = True  # Set to 'NPU' for Neural Processing Unit, True/'GPU' for GPU, False/'CPU' for CPU\nUSE_FP16 = True  # FP16 is better than INT8 on Cherry Trail (no VNNI support)\nCAMERA_INDEX = int(os.getenv(\"CAMERA_INDEX\", \"0\"))\nCAMERA_INDEX_CANDIDATES = [\n    int(i.strip())\n    for i in os.getenv(\"CAMERA_INDEX_CANDIDATES\", \"0,1,2\").split(\",\")\n    if i.strip().isdigit()",
+        "detail": "run_inference",
+        "documentation": {}
+    },
+    {
+        "label": "OPENVINO_MODEL_PATH",
+        "kind": 5,
+        "importPath": "run_inference",
+        "description": "run_inference",
+        "peekOfCode": "OPENVINO_MODEL_PATH = 'models/best_openvino_model'  # Will be generated if needed\nUSE_OPENVINO = True\nUSE_GPU = True  # Set to 'NPU' for Neural Processing Unit, True/'GPU' for GPU, False/'CPU' for CPU\nUSE_FP16 = True  # FP16 is better than INT8 on Cherry Trail (no VNNI support)\nCAMERA_INDEX = int(os.getenv(\"CAMERA_INDEX\", \"0\"))\nCAMERA_INDEX_CANDIDATES = [\n    int(i.strip())\n    for i in os.getenv(\"CAMERA_INDEX_CANDIDATES\", \"0,1,2\").split(\",\")\n    if i.strip().isdigit()\n]",
+        "detail": "run_inference",
+        "documentation": {}
+    },
+    {
+        "label": "USE_OPENVINO",
+        "kind": 5,
+        "importPath": "run_inference",
+        "description": "run_inference",
+        "peekOfCode": "USE_OPENVINO = True\nUSE_GPU = True  # Set to 'NPU' for Neural Processing Unit, True/'GPU' for GPU, False/'CPU' for CPU\nUSE_FP16 = True  # FP16 is better than INT8 on Cherry Trail (no VNNI support)\nCAMERA_INDEX = int(os.getenv(\"CAMERA_INDEX\", \"0\"))\nCAMERA_INDEX_CANDIDATES = [\n    int(i.strip())\n    for i in os.getenv(\"CAMERA_INDEX_CANDIDATES\", \"0,1,2\").split(\",\")\n    if i.strip().isdigit()\n]\n# --- NETWORK SETUP ---",
+        "detail": "run_inference",
+        "documentation": {}
+    },
+    {
+        "label": "USE_GPU",
+        "kind": 5,
+        "importPath": "run_inference",
+        "description": "run_inference",
+        "peekOfCode": "USE_GPU = True  # Set to 'NPU' for Neural Processing Unit, True/'GPU' for GPU, False/'CPU' for CPU\nUSE_FP16 = True  # FP16 is better than INT8 on Cherry Trail (no VNNI support)\nCAMERA_INDEX = int(os.getenv(\"CAMERA_INDEX\", \"0\"))\nCAMERA_INDEX_CANDIDATES = [\n    int(i.strip())\n    for i in os.getenv(\"CAMERA_INDEX_CANDIDATES\", \"0,1,2\").split(\",\")\n    if i.strip().isdigit()\n]\n# --- NETWORK SETUP ---\nIS_SIMULATION = True   # Set to False when on the real Robot/Kangaroo",
+        "detail": "run_inference",
+        "documentation": {}
+    },
+    {
+        "label": "USE_FP16",
+        "kind": 5,
+        "importPath": "run_inference",
+        "description": "run_inference",
+        "peekOfCode": "USE_FP16 = True  # FP16 is better than INT8 on Cherry Trail (no VNNI support)\nCAMERA_INDEX = int(os.getenv(\"CAMERA_INDEX\", \"0\"))\nCAMERA_INDEX_CANDIDATES = [\n    int(i.strip())\n    for i in os.getenv(\"CAMERA_INDEX_CANDIDATES\", \"0,1,2\").split(\",\")\n    if i.strip().isdigit()\n]\n# --- NETWORK SETUP ---\nIS_SIMULATION = True   # Set to False when on the real Robot/Kangaroo\nTEAM_NUMBER = 3291       ",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -315,16 +511,16 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "CAMERA_INDEX = 0\nCONFIDENCE_THRESHOLD = 0.65\n# --- NETWORK SETUP ---\nIS_SIMULATION = True   # Set to False when on the real Robot/Kangaroo\nTEAM_NUMBER = 2791       \n# --- ROBOT PHYSICAL CONSTANTS ---\nCAMERA_HFOV_DEG = 60.0         \nKNOWN_FUEL_DIAMETER_IN = 5.91  \nINCHES_TO_METERS = 0.0254\n# --- RADAR SETTINGS ---",
+        "peekOfCode": "CAMERA_INDEX = int(os.getenv(\"CAMERA_INDEX\", \"0\"))\nCAMERA_INDEX_CANDIDATES = [\n    int(i.strip())\n    for i in os.getenv(\"CAMERA_INDEX_CANDIDATES\", \"0,1,2\").split(\",\")\n    if i.strip().isdigit()\n]\n# --- NETWORK SETUP ---\nIS_SIMULATION = True   # Set to False when on the real Robot/Kangaroo\nTEAM_NUMBER = 3291       \n# --- ROBOT PHYSICAL CONSTANTS ---",
         "detail": "run_inference",
         "documentation": {}
     },
     {
-        "label": "CONFIDENCE_THRESHOLD",
+        "label": "CAMERA_INDEX_CANDIDATES",
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "CONFIDENCE_THRESHOLD = 0.65\n# --- NETWORK SETUP ---\nIS_SIMULATION = True   # Set to False when on the real Robot/Kangaroo\nTEAM_NUMBER = 2791       \n# --- ROBOT PHYSICAL CONSTANTS ---\nCAMERA_HFOV_DEG = 60.0         \nKNOWN_FUEL_DIAMETER_IN = 5.91  \nINCHES_TO_METERS = 0.0254\n# --- RADAR SETTINGS ---\nRADAR_WIDTH = 500",
+        "peekOfCode": "CAMERA_INDEX_CANDIDATES = [\n    int(i.strip())\n    for i in os.getenv(\"CAMERA_INDEX_CANDIDATES\", \"0,1,2\").split(\",\")\n    if i.strip().isdigit()\n]\n# --- NETWORK SETUP ---\nIS_SIMULATION = True   # Set to False when on the real Robot/Kangaroo\nTEAM_NUMBER = 3291       \n# --- ROBOT PHYSICAL CONSTANTS ---\nCAMERA_HFOV_DEG = 60.0         ",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -333,7 +529,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "IS_SIMULATION = True   # Set to False when on the real Robot/Kangaroo\nTEAM_NUMBER = 2791       \n# --- ROBOT PHYSICAL CONSTANTS ---\nCAMERA_HFOV_DEG = 60.0         \nKNOWN_FUEL_DIAMETER_IN = 5.91  \nINCHES_TO_METERS = 0.0254\n# --- RADAR SETTINGS ---\nRADAR_WIDTH = 500\nRADAR_HEIGHT = 500\nGRID_SCALE = 4.0 ",
+        "peekOfCode": "IS_SIMULATION = True   # Set to False when on the real Robot/Kangaroo\nTEAM_NUMBER = 3291       \n# --- ROBOT PHYSICAL CONSTANTS ---\nCAMERA_HFOV_DEG = 60.0         \nKNOWN_FUEL_DIAMETER_IN = 5.91  \nINCHES_TO_METERS = 0.0254\nINTAKE_WIDTH_INCHES = 12.0  # Cluster balls within intake width\nMAX_REACH_METERS = 3.0      # Ignore balls beyond 10 feet\nMIN_DIST_FROM_WALL_IN = 8.0  # Week 0: Ignore balls too close to Alliance Wall glass\n# --- PILE TARGETING SETTINGS ---",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -342,7 +538,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "TEAM_NUMBER = 2791       \n# --- ROBOT PHYSICAL CONSTANTS ---\nCAMERA_HFOV_DEG = 60.0         \nKNOWN_FUEL_DIAMETER_IN = 5.91  \nINCHES_TO_METERS = 0.0254\n# --- RADAR SETTINGS ---\nRADAR_WIDTH = 500\nRADAR_HEIGHT = 500\nGRID_SCALE = 4.0 \n# ==========================================",
+        "peekOfCode": "TEAM_NUMBER = 3291       \n# --- ROBOT PHYSICAL CONSTANTS ---\nCAMERA_HFOV_DEG = 60.0         \nKNOWN_FUEL_DIAMETER_IN = 5.91  \nINCHES_TO_METERS = 0.0254\nINTAKE_WIDTH_INCHES = 12.0  # Cluster balls within intake width\nMAX_REACH_METERS = 3.0      # Ignore balls beyond 10 feet\nMIN_DIST_FROM_WALL_IN = 8.0  # Week 0: Ignore balls too close to Alliance Wall glass\n# --- PILE TARGETING SETTINGS ---\nENABLE_CLUSTERING = True     # Set False to disable pile targeting",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -351,7 +547,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "CAMERA_HFOV_DEG = 60.0         \nKNOWN_FUEL_DIAMETER_IN = 5.91  \nINCHES_TO_METERS = 0.0254\n# --- RADAR SETTINGS ---\nRADAR_WIDTH = 500\nRADAR_HEIGHT = 500\nGRID_SCALE = 4.0 \n# ==========================================\n# INITIALIZATION\n# ==========================================",
+        "peekOfCode": "CAMERA_HFOV_DEG = 60.0         \nKNOWN_FUEL_DIAMETER_IN = 5.91  \nINCHES_TO_METERS = 0.0254\nINTAKE_WIDTH_INCHES = 12.0  # Cluster balls within intake width\nMAX_REACH_METERS = 3.0      # Ignore balls beyond 10 feet\nMIN_DIST_FROM_WALL_IN = 8.0  # Week 0: Ignore balls too close to Alliance Wall glass\n# --- PILE TARGETING SETTINGS ---\nENABLE_CLUSTERING = True     # Set False to disable pile targeting\nCLUSTER_RADIUS_IN = 12.0     # Group balls within this distance (matches intake)\nPILE_PRIORITY_WEIGHT = 50    # Score = (count * weight) - distance",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -360,7 +556,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "KNOWN_FUEL_DIAMETER_IN = 5.91  \nINCHES_TO_METERS = 0.0254\n# --- RADAR SETTINGS ---\nRADAR_WIDTH = 500\nRADAR_HEIGHT = 500\nGRID_SCALE = 4.0 \n# ==========================================\n# INITIALIZATION\n# ==========================================\nprint(\"Starting FRC Vision Master Script...\")",
+        "peekOfCode": "KNOWN_FUEL_DIAMETER_IN = 5.91  \nINCHES_TO_METERS = 0.0254\nINTAKE_WIDTH_INCHES = 12.0  # Cluster balls within intake width\nMAX_REACH_METERS = 3.0      # Ignore balls beyond 10 feet\nMIN_DIST_FROM_WALL_IN = 8.0  # Week 0: Ignore balls too close to Alliance Wall glass\n# --- PILE TARGETING SETTINGS ---\nENABLE_CLUSTERING = True     # Set False to disable pile targeting\nCLUSTER_RADIUS_IN = 12.0     # Group balls within this distance (matches intake)\nPILE_PRIORITY_WEIGHT = 50    # Score = (count * weight) - distance\nNT_THROTTLE_FACTOR = 2       # Publish every Nth frame to save bandwidth",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -369,7 +565,79 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "INCHES_TO_METERS = 0.0254\n# --- RADAR SETTINGS ---\nRADAR_WIDTH = 500\nRADAR_HEIGHT = 500\nGRID_SCALE = 4.0 \n# ==========================================\n# INITIALIZATION\n# ==========================================\nprint(\"Starting FRC Vision Master Script...\")\nmodel = YOLO(MODEL_PATH)",
+        "peekOfCode": "INCHES_TO_METERS = 0.0254\nINTAKE_WIDTH_INCHES = 12.0  # Cluster balls within intake width\nMAX_REACH_METERS = 3.0      # Ignore balls beyond 10 feet\nMIN_DIST_FROM_WALL_IN = 8.0  # Week 0: Ignore balls too close to Alliance Wall glass\n# --- PILE TARGETING SETTINGS ---\nENABLE_CLUSTERING = True     # Set False to disable pile targeting\nCLUSTER_RADIUS_IN = 12.0     # Group balls within this distance (matches intake)\nPILE_PRIORITY_WEIGHT = 50    # Score = (count * weight) - distance\nNT_THROTTLE_FACTOR = 2       # Publish every Nth frame to save bandwidth\nCONFIDENCE_FILTER = 0.67     # Minimum detection confidence (lowered for Week 0)",
+        "detail": "run_inference",
+        "documentation": {}
+    },
+    {
+        "label": "INTAKE_WIDTH_INCHES",
+        "kind": 5,
+        "importPath": "run_inference",
+        "description": "run_inference",
+        "peekOfCode": "INTAKE_WIDTH_INCHES = 12.0  # Cluster balls within intake width\nMAX_REACH_METERS = 3.0      # Ignore balls beyond 10 feet\nMIN_DIST_FROM_WALL_IN = 8.0  # Week 0: Ignore balls too close to Alliance Wall glass\n# --- PILE TARGETING SETTINGS ---\nENABLE_CLUSTERING = True     # Set False to disable pile targeting\nCLUSTER_RADIUS_IN = 12.0     # Group balls within this distance (matches intake)\nPILE_PRIORITY_WEIGHT = 50    # Score = (count * weight) - distance\nNT_THROTTLE_FACTOR = 2       # Publish every Nth frame to save bandwidth\nCONFIDENCE_FILTER = 0.67     # Minimum detection confidence (lowered for Week 0)\n# --- RADAR SETTINGS ---",
+        "detail": "run_inference",
+        "documentation": {}
+    },
+    {
+        "label": "MAX_REACH_METERS",
+        "kind": 5,
+        "importPath": "run_inference",
+        "description": "run_inference",
+        "peekOfCode": "MAX_REACH_METERS = 3.0      # Ignore balls beyond 10 feet\nMIN_DIST_FROM_WALL_IN = 8.0  # Week 0: Ignore balls too close to Alliance Wall glass\n# --- PILE TARGETING SETTINGS ---\nENABLE_CLUSTERING = True     # Set False to disable pile targeting\nCLUSTER_RADIUS_IN = 12.0     # Group balls within this distance (matches intake)\nPILE_PRIORITY_WEIGHT = 50    # Score = (count * weight) - distance\nNT_THROTTLE_FACTOR = 2       # Publish every Nth frame to save bandwidth\nCONFIDENCE_FILTER = 0.67     # Minimum detection confidence (lowered for Week 0)\n# --- RADAR SETTINGS ---\nRADAR_WIDTH = 500",
+        "detail": "run_inference",
+        "documentation": {}
+    },
+    {
+        "label": "MIN_DIST_FROM_WALL_IN",
+        "kind": 5,
+        "importPath": "run_inference",
+        "description": "run_inference",
+        "peekOfCode": "MIN_DIST_FROM_WALL_IN = 8.0  # Week 0: Ignore balls too close to Alliance Wall glass\n# --- PILE TARGETING SETTINGS ---\nENABLE_CLUSTERING = True     # Set False to disable pile targeting\nCLUSTER_RADIUS_IN = 12.0     # Group balls within this distance (matches intake)\nPILE_PRIORITY_WEIGHT = 50    # Score = (count * weight) - distance\nNT_THROTTLE_FACTOR = 2       # Publish every Nth frame to save bandwidth\nCONFIDENCE_FILTER = 0.67     # Minimum detection confidence (lowered for Week 0)\n# --- RADAR SETTINGS ---\nRADAR_WIDTH = 500\nRADAR_HEIGHT = 500",
+        "detail": "run_inference",
+        "documentation": {}
+    },
+    {
+        "label": "ENABLE_CLUSTERING",
+        "kind": 5,
+        "importPath": "run_inference",
+        "description": "run_inference",
+        "peekOfCode": "ENABLE_CLUSTERING = True     # Set False to disable pile targeting\nCLUSTER_RADIUS_IN = 12.0     # Group balls within this distance (matches intake)\nPILE_PRIORITY_WEIGHT = 50    # Score = (count * weight) - distance\nNT_THROTTLE_FACTOR = 2       # Publish every Nth frame to save bandwidth\nCONFIDENCE_FILTER = 0.67     # Minimum detection confidence (lowered for Week 0)\n# --- RADAR SETTINGS ---\nRADAR_WIDTH = 500\nRADAR_HEIGHT = 500\nGRID_SCALE = 4.0 \nFRAME_WIDTH = 320",
+        "detail": "run_inference",
+        "documentation": {}
+    },
+    {
+        "label": "CLUSTER_RADIUS_IN",
+        "kind": 5,
+        "importPath": "run_inference",
+        "description": "run_inference",
+        "peekOfCode": "CLUSTER_RADIUS_IN = 12.0     # Group balls within this distance (matches intake)\nPILE_PRIORITY_WEIGHT = 50    # Score = (count * weight) - distance\nNT_THROTTLE_FACTOR = 2       # Publish every Nth frame to save bandwidth\nCONFIDENCE_FILTER = 0.67     # Minimum detection confidence (lowered for Week 0)\n# --- RADAR SETTINGS ---\nRADAR_WIDTH = 500\nRADAR_HEIGHT = 500\nGRID_SCALE = 4.0 \nFRAME_WIDTH = 320\nFRAME_HEIGHT = 240",
+        "detail": "run_inference",
+        "documentation": {}
+    },
+    {
+        "label": "PILE_PRIORITY_WEIGHT",
+        "kind": 5,
+        "importPath": "run_inference",
+        "description": "run_inference",
+        "peekOfCode": "PILE_PRIORITY_WEIGHT = 50    # Score = (count * weight) - distance\nNT_THROTTLE_FACTOR = 2       # Publish every Nth frame to save bandwidth\nCONFIDENCE_FILTER = 0.67     # Minimum detection confidence (lowered for Week 0)\n# --- RADAR SETTINGS ---\nRADAR_WIDTH = 500\nRADAR_HEIGHT = 500\nGRID_SCALE = 4.0 \nFRAME_WIDTH = 320\nFRAME_HEIGHT = 240\n# --- ASYNC INFERENCE SETTINGS ---",
+        "detail": "run_inference",
+        "documentation": {}
+    },
+    {
+        "label": "NT_THROTTLE_FACTOR",
+        "kind": 5,
+        "importPath": "run_inference",
+        "description": "run_inference",
+        "peekOfCode": "NT_THROTTLE_FACTOR = 2       # Publish every Nth frame to save bandwidth\nCONFIDENCE_FILTER = 0.67     # Minimum detection confidence (lowered for Week 0)\n# --- RADAR SETTINGS ---\nRADAR_WIDTH = 500\nRADAR_HEIGHT = 500\nGRID_SCALE = 4.0 \nFRAME_WIDTH = 320\nFRAME_HEIGHT = 240\n# --- ASYNC INFERENCE SETTINGS ---\nASYNC_QUEUE_SIZE = 2  # Keep pipeline short to avoid lag on slow hardware",
+        "detail": "run_inference",
+        "documentation": {}
+    },
+    {
+        "label": "CONFIDENCE_FILTER",
+        "kind": 5,
+        "importPath": "run_inference",
+        "description": "run_inference",
+        "peekOfCode": "CONFIDENCE_FILTER = 0.67     # Minimum detection confidence (lowered for Week 0)\n# --- RADAR SETTINGS ---\nRADAR_WIDTH = 500\nRADAR_HEIGHT = 500\nGRID_SCALE = 4.0 \nFRAME_WIDTH = 320\nFRAME_HEIGHT = 240\n# --- ASYNC INFERENCE SETTINGS ---\nASYNC_QUEUE_SIZE = 2  # Keep pipeline short to avoid lag on slow hardware\nINFERENCE_THREAD_PRIORITY = -10  # Lower priority to avoid starving camera thread",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -378,7 +646,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "RADAR_WIDTH = 500\nRADAR_HEIGHT = 500\nGRID_SCALE = 4.0 \n# ==========================================\n# INITIALIZATION\n# ==========================================\nprint(\"Starting FRC Vision Master Script...\")\nmodel = YOLO(MODEL_PATH)\ninst = ntcore.NetworkTableInstance.getDefault()\nif IS_SIMULATION:",
+        "peekOfCode": "RADAR_WIDTH = 500\nRADAR_HEIGHT = 500\nGRID_SCALE = 4.0 \nFRAME_WIDTH = 320\nFRAME_HEIGHT = 240\n# --- ASYNC INFERENCE SETTINGS ---\nASYNC_QUEUE_SIZE = 2  # Keep pipeline short to avoid lag on slow hardware\nINFERENCE_THREAD_PRIORITY = -10  # Lower priority to avoid starving camera thread\nINFERENCE_DECIMATION = 2  # Run inference every Nth frame (1=every frame, 2=every other)\nHEADLESS = True  # Set to True to disable GUI on Kangaroo",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -387,7 +655,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "RADAR_HEIGHT = 500\nGRID_SCALE = 4.0 \n# ==========================================\n# INITIALIZATION\n# ==========================================\nprint(\"Starting FRC Vision Master Script...\")\nmodel = YOLO(MODEL_PATH)\ninst = ntcore.NetworkTableInstance.getDefault()\nif IS_SIMULATION:\n    inst.setServer(\"127.0.0.1\")",
+        "peekOfCode": "RADAR_HEIGHT = 500\nGRID_SCALE = 4.0 \nFRAME_WIDTH = 320\nFRAME_HEIGHT = 240\n# --- ASYNC INFERENCE SETTINGS ---\nASYNC_QUEUE_SIZE = 2  # Keep pipeline short to avoid lag on slow hardware\nINFERENCE_THREAD_PRIORITY = -10  # Lower priority to avoid starving camera thread\nINFERENCE_DECIMATION = 2  # Run inference every Nth frame (1=every frame, 2=every other)\nHEADLESS = True  # Set to True to disable GUI on Kangaroo\n# ==========================================",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -396,16 +664,61 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "GRID_SCALE = 4.0 \n# ==========================================\n# INITIALIZATION\n# ==========================================\nprint(\"Starting FRC Vision Master Script...\")\nmodel = YOLO(MODEL_PATH)\ninst = ntcore.NetworkTableInstance.getDefault()\nif IS_SIMULATION:\n    inst.setServer(\"127.0.0.1\")\nelse:",
+        "peekOfCode": "GRID_SCALE = 4.0 \nFRAME_WIDTH = 320\nFRAME_HEIGHT = 240\n# --- ASYNC INFERENCE SETTINGS ---\nASYNC_QUEUE_SIZE = 2  # Keep pipeline short to avoid lag on slow hardware\nINFERENCE_THREAD_PRIORITY = -10  # Lower priority to avoid starving camera thread\nINFERENCE_DECIMATION = 2  # Run inference every Nth frame (1=every frame, 2=every other)\nHEADLESS = True  # Set to True to disable GUI on Kangaroo\n# ==========================================\n# INITIALIZATION",
         "detail": "run_inference",
         "documentation": {}
     },
     {
-        "label": "model",
+        "label": "FRAME_WIDTH",
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "model = YOLO(MODEL_PATH)\ninst = ntcore.NetworkTableInstance.getDefault()\nif IS_SIMULATION:\n    inst.setServer(\"127.0.0.1\")\nelse:\n    inst.setServerTeam(TEAM_NUMBER)\ninst.startClient4(\"KangarooVision\")\nsd = inst.getTable(\"SmartDashboard\") \ncv_table = inst.getTable(\"fuelCV\")    \npub_num = cv_table.getIntegerTopic(\"number_of_fuel\").publish()",
+        "peekOfCode": "FRAME_WIDTH = 320\nFRAME_HEIGHT = 240\n# --- ASYNC INFERENCE SETTINGS ---\nASYNC_QUEUE_SIZE = 2  # Keep pipeline short to avoid lag on slow hardware\nINFERENCE_THREAD_PRIORITY = -10  # Lower priority to avoid starving camera thread\nINFERENCE_DECIMATION = 2  # Run inference every Nth frame (1=every frame, 2=every other)\nHEADLESS = True  # Set to True to disable GUI on Kangaroo\n# ==========================================\n# INITIALIZATION\n# ==========================================",
+        "detail": "run_inference",
+        "documentation": {}
+    },
+    {
+        "label": "FRAME_HEIGHT",
+        "kind": 5,
+        "importPath": "run_inference",
+        "description": "run_inference",
+        "peekOfCode": "FRAME_HEIGHT = 240\n# --- ASYNC INFERENCE SETTINGS ---\nASYNC_QUEUE_SIZE = 2  # Keep pipeline short to avoid lag on slow hardware\nINFERENCE_THREAD_PRIORITY = -10  # Lower priority to avoid starving camera thread\nINFERENCE_DECIMATION = 2  # Run inference every Nth frame (1=every frame, 2=every other)\nHEADLESS = True  # Set to True to disable GUI on Kangaroo\n# ==========================================\n# INITIALIZATION\n# ==========================================\nprint(\"Starting FRC Vision Master Script (Cherry Trail Optimized)...\")",
+        "detail": "run_inference",
+        "documentation": {}
+    },
+    {
+        "label": "ASYNC_QUEUE_SIZE",
+        "kind": 5,
+        "importPath": "run_inference",
+        "description": "run_inference",
+        "peekOfCode": "ASYNC_QUEUE_SIZE = 2  # Keep pipeline short to avoid lag on slow hardware\nINFERENCE_THREAD_PRIORITY = -10  # Lower priority to avoid starving camera thread\nINFERENCE_DECIMATION = 2  # Run inference every Nth frame (1=every frame, 2=every other)\nHEADLESS = True  # Set to True to disable GUI on Kangaroo\n# ==========================================\n# INITIALIZATION\n# ==========================================\nprint(\"Starting FRC Vision Master Script (Cherry Trail Optimized)...\")\nprint(f\"Using OpenVINO: {USE_OPENVINO} | GPU: {USE_GPU} | FP16: {USE_FP16}\")\n# Initialize model",
+        "detail": "run_inference",
+        "documentation": {}
+    },
+    {
+        "label": "INFERENCE_THREAD_PRIORITY",
+        "kind": 5,
+        "importPath": "run_inference",
+        "description": "run_inference",
+        "peekOfCode": "INFERENCE_THREAD_PRIORITY = -10  # Lower priority to avoid starving camera thread\nINFERENCE_DECIMATION = 2  # Run inference every Nth frame (1=every frame, 2=every other)\nHEADLESS = True  # Set to True to disable GUI on Kangaroo\n# ==========================================\n# INITIALIZATION\n# ==========================================\nprint(\"Starting FRC Vision Master Script (Cherry Trail Optimized)...\")\nprint(f\"Using OpenVINO: {USE_OPENVINO} | GPU: {USE_GPU} | FP16: {USE_FP16}\")\n# Initialize model\nif USE_OPENVINO:",
+        "detail": "run_inference",
+        "documentation": {}
+    },
+    {
+        "label": "INFERENCE_DECIMATION",
+        "kind": 5,
+        "importPath": "run_inference",
+        "description": "run_inference",
+        "peekOfCode": "INFERENCE_DECIMATION = 2  # Run inference every Nth frame (1=every frame, 2=every other)\nHEADLESS = True  # Set to True to disable GUI on Kangaroo\n# ==========================================\n# INITIALIZATION\n# ==========================================\nprint(\"Starting FRC Vision Master Script (Cherry Trail Optimized)...\")\nprint(f\"Using OpenVINO: {USE_OPENVINO} | GPU: {USE_GPU} | FP16: {USE_FP16}\")\n# Initialize model\nif USE_OPENVINO:\n    # Setup OpenVINO with GPU acceleration",
+        "detail": "run_inference",
+        "documentation": {}
+    },
+    {
+        "label": "HEADLESS",
+        "kind": 5,
+        "importPath": "run_inference",
+        "description": "run_inference",
+        "peekOfCode": "HEADLESS = True  # Set to True to disable GUI on Kangaroo\n# ==========================================\n# INITIALIZATION\n# ==========================================\nprint(\"Starting FRC Vision Master Script (Cherry Trail Optimized)...\")\nprint(f\"Using OpenVINO: {USE_OPENVINO} | GPU: {USE_GPU} | FP16: {USE_FP16}\")\n# Initialize model\nif USE_OPENVINO:\n    # Setup OpenVINO with GPU acceleration\n    core = Core()",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -414,7 +727,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "inst = ntcore.NetworkTableInstance.getDefault()\nif IS_SIMULATION:\n    inst.setServer(\"127.0.0.1\")\nelse:\n    inst.setServerTeam(TEAM_NUMBER)\ninst.startClient4(\"KangarooVision\")\nsd = inst.getTable(\"SmartDashboard\") \ncv_table = inst.getTable(\"fuelCV\")    \npub_num = cv_table.getIntegerTopic(\"number_of_fuel\").publish()\npub_yaw = cv_table.getDoubleArrayTopic(\"yaw_radians\").publish()",
+        "peekOfCode": "inst = NetworkTableInstance.getDefault()\nif IS_SIMULATION:\n    inst.setServer(\"127.0.0.1\")\nelse:\n    inst.setServerTeam(TEAM_NUMBER)\ninst.startClient4(\"KangarooVision\")\nsd = inst.getTable(\"SmartDashboard\") \ncv_table = inst.getTable(\"fuelCV\")    \npub_num = cv_table.getIntegerTopic(\"number_of_fuel\").publish()\npub_yaw = cv_table.getDoubleArrayTopic(\"yaw_radians\").publish()",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -423,7 +736,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "sd = inst.getTable(\"SmartDashboard\") \ncv_table = inst.getTable(\"fuelCV\")    \npub_num = cv_table.getIntegerTopic(\"number_of_fuel\").publish()\npub_yaw = cv_table.getDoubleArrayTopic(\"yaw_radians\").publish()\npub_dist = cv_table.getDoubleArrayTopic(\"distance\").publish()\npub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuelcv1/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuelcv1/Angle\").publish()\n# Telemetry tracking for HUD",
+        "peekOfCode": "sd = inst.getTable(\"SmartDashboard\") \ncv_table = inst.getTable(\"fuelCV\")    \npub_num = cv_table.getIntegerTopic(\"number_of_fuel\").publish()\npub_yaw = cv_table.getDoubleArrayTopic(\"yaw_radians\").publish()\npub_dist = cv_table.getDoubleArrayTopic(\"distance\").publish()\npub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\n# Legacy single-target publishers\npub_has_target = sd.getBooleanTopic(\"Fuelcv1/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuelcv1/Angle\").publish()",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -432,7 +745,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "cv_table = inst.getTable(\"fuelCV\")    \npub_num = cv_table.getIntegerTopic(\"number_of_fuel\").publish()\npub_yaw = cv_table.getDoubleArrayTopic(\"yaw_radians\").publish()\npub_dist = cv_table.getDoubleArrayTopic(\"distance\").publish()\npub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuelcv1/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuelcv1/Angle\").publish()\n# Telemetry tracking for HUD\nsent_angle = 0.0",
+        "peekOfCode": "cv_table = inst.getTable(\"fuelCV\")    \npub_num = cv_table.getIntegerTopic(\"number_of_fuel\").publish()\npub_yaw = cv_table.getDoubleArrayTopic(\"yaw_radians\").publish()\npub_dist = cv_table.getDoubleArrayTopic(\"distance\").publish()\npub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\n# Legacy single-target publishers\npub_has_target = sd.getBooleanTopic(\"Fuelcv1/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuelcv1/Angle\").publish()\n# NEW: Pile targeting publishers (for Auto-Collector)",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -441,7 +754,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "pub_num = cv_table.getIntegerTopic(\"number_of_fuel\").publish()\npub_yaw = cv_table.getDoubleArrayTopic(\"yaw_radians\").publish()\npub_dist = cv_table.getDoubleArrayTopic(\"distance\").publish()\npub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuelcv1/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuelcv1/Angle\").publish()\n# Telemetry tracking for HUD\nsent_angle = 0.0\nsent_dist = 0.0",
+        "peekOfCode": "pub_num = cv_table.getIntegerTopic(\"number_of_fuel\").publish()\npub_yaw = cv_table.getDoubleArrayTopic(\"yaw_radians\").publish()\npub_dist = cv_table.getDoubleArrayTopic(\"distance\").publish()\npub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\n# Legacy single-target publishers\npub_has_target = sd.getBooleanTopic(\"Fuelcv1/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuelcv1/Angle\").publish()\n# NEW: Pile targeting publishers (for Auto-Collector)\npub_target_x = cv_table.getDoubleTopic(\"target_x\").publish()",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -450,7 +763,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "pub_yaw = cv_table.getDoubleArrayTopic(\"yaw_radians\").publish()\npub_dist = cv_table.getDoubleArrayTopic(\"distance\").publish()\npub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuelcv1/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuelcv1/Angle\").publish()\n# Telemetry tracking for HUD\nsent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"",
+        "peekOfCode": "pub_yaw = cv_table.getDoubleArrayTopic(\"yaw_radians\").publish()\npub_dist = cv_table.getDoubleArrayTopic(\"distance\").publish()\npub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\n# Legacy single-target publishers\npub_has_target = sd.getBooleanTopic(\"Fuelcv1/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuelcv1/Angle\").publish()\n# NEW: Pile targeting publishers (for Auto-Collector)\npub_target_x = cv_table.getDoubleTopic(\"target_x\").publish()\npub_target_y = cv_table.getDoubleTopic(\"target_y\").publish()",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -459,7 +772,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "pub_dist = cv_table.getDoubleArrayTopic(\"distance\").publish()\npub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuelcv1/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuelcv1/Angle\").publish()\n# Telemetry tracking for HUD\nsent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)",
+        "peekOfCode": "pub_dist = cv_table.getDoubleArrayTopic(\"distance\").publish()\npub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\n# Legacy single-target publishers\npub_has_target = sd.getBooleanTopic(\"Fuelcv1/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuelcv1/Angle\").publish()\n# NEW: Pile targeting publishers (for Auto-Collector)\npub_target_x = cv_table.getDoubleTopic(\"target_x\").publish()\npub_target_y = cv_table.getDoubleTopic(\"target_y\").publish()\npub_pile_has_target = cv_table.getBooleanTopic(\"has_target\").publish()",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -468,7 +781,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "pub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuelcv1/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuelcv1/Angle\").publish()\n# Telemetry tracking for HUD\nsent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))",
+        "peekOfCode": "pub_x = cv_table.getDoubleArrayTopic(\"ball_position_x\").publish()\npub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\n# Legacy single-target publishers\npub_has_target = sd.getBooleanTopic(\"Fuelcv1/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuelcv1/Angle\").publish()\n# NEW: Pile targeting publishers (for Auto-Collector)\npub_target_x = cv_table.getDoubleTopic(\"target_x\").publish()\npub_target_y = cv_table.getDoubleTopic(\"target_y\").publish()\npub_pile_has_target = cv_table.getBooleanTopic(\"has_target\").publish()\npub_pile_size = cv_table.getIntegerTopic(\"target_pile_size\").publish()",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -477,7 +790,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "pub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\npub_has_target = sd.getBooleanTopic(\"Fuelcv1/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuelcv1/Angle\").publish()\n# Telemetry tracking for HUD\nsent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))\ndef create_radar_frame(detections, best_idx):",
+        "peekOfCode": "pub_y = cv_table.getDoubleArrayTopic(\"ball_position_y\").publish()\n# Legacy single-target publishers\npub_has_target = sd.getBooleanTopic(\"Fuelcv1/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuelcv1/Angle\").publish()\n# NEW: Pile targeting publishers (for Auto-Collector)\npub_target_x = cv_table.getDoubleTopic(\"target_x\").publish()\npub_target_y = cv_table.getDoubleTopic(\"target_y\").publish()\npub_pile_has_target = cv_table.getBooleanTopic(\"has_target\").publish()\npub_pile_size = cv_table.getIntegerTopic(\"target_pile_size\").publish()\npub_pile_score = cv_table.getDoubleTopic(\"target_pile_score\").publish()",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -486,7 +799,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "pub_has_target = sd.getBooleanTopic(\"Fuelcv1/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuelcv1/Angle\").publish()\n# Telemetry tracking for HUD\nsent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))\ndef create_radar_frame(detections, best_idx):\n    radar = np.zeros((RADAR_HEIGHT, RADAR_WIDTH, 3), dtype=np.uint8)",
+        "peekOfCode": "pub_has_target = sd.getBooleanTopic(\"Fuelcv1/HasTarget\").publish()\npub_target_angle = sd.getDoubleTopic(\"Fuelcv1/Angle\").publish()\n# NEW: Pile targeting publishers (for Auto-Collector)\npub_target_x = cv_table.getDoubleTopic(\"target_x\").publish()\npub_target_y = cv_table.getDoubleTopic(\"target_y\").publish()\npub_pile_has_target = cv_table.getBooleanTopic(\"has_target\").publish()\npub_pile_size = cv_table.getIntegerTopic(\"target_pile_size\").publish()\npub_pile_score = cv_table.getDoubleTopic(\"target_pile_score\").publish()\n# Telemetry tracking for HUD\nsent_angle = 0.0",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -495,7 +808,52 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "pub_target_angle = sd.getDoubleTopic(\"Fuelcv1/Angle\").publish()\n# Telemetry tracking for HUD\nsent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))\ndef create_radar_frame(detections, best_idx):\n    radar = np.zeros((RADAR_HEIGHT, RADAR_WIDTH, 3), dtype=np.uint8)\n    origin_x, origin_y = RADAR_WIDTH // 2, RADAR_HEIGHT - 50",
+        "peekOfCode": "pub_target_angle = sd.getDoubleTopic(\"Fuelcv1/Angle\").publish()\n# NEW: Pile targeting publishers (for Auto-Collector)\npub_target_x = cv_table.getDoubleTopic(\"target_x\").publish()\npub_target_y = cv_table.getDoubleTopic(\"target_y\").publish()\npub_pile_has_target = cv_table.getBooleanTopic(\"has_target\").publish()\npub_pile_size = cv_table.getIntegerTopic(\"target_pile_size\").publish()\npub_pile_score = cv_table.getDoubleTopic(\"target_pile_score\").publish()\n# Telemetry tracking for HUD\nsent_angle = 0.0\nsent_dist = 0.0",
+        "detail": "run_inference",
+        "documentation": {}
+    },
+    {
+        "label": "pub_target_x",
+        "kind": 5,
+        "importPath": "run_inference",
+        "description": "run_inference",
+        "peekOfCode": "pub_target_x = cv_table.getDoubleTopic(\"target_x\").publish()\npub_target_y = cv_table.getDoubleTopic(\"target_y\").publish()\npub_pile_has_target = cv_table.getBooleanTopic(\"has_target\").publish()\npub_pile_size = cv_table.getIntegerTopic(\"target_pile_size\").publish()\npub_pile_score = cv_table.getDoubleTopic(\"target_pile_score\").publish()\n# Telemetry tracking for HUD\nsent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"\n# Async inference state",
+        "detail": "run_inference",
+        "documentation": {}
+    },
+    {
+        "label": "pub_target_y",
+        "kind": 5,
+        "importPath": "run_inference",
+        "description": "run_inference",
+        "peekOfCode": "pub_target_y = cv_table.getDoubleTopic(\"target_y\").publish()\npub_pile_has_target = cv_table.getBooleanTopic(\"has_target\").publish()\npub_pile_size = cv_table.getIntegerTopic(\"target_pile_size\").publish()\npub_pile_score = cv_table.getDoubleTopic(\"target_pile_score\").publish()\n# Telemetry tracking for HUD\nsent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"\n# Async inference state\ninference_queue = Queue(maxsize=ASYNC_QUEUE_SIZE)",
+        "detail": "run_inference",
+        "documentation": {}
+    },
+    {
+        "label": "pub_pile_has_target",
+        "kind": 5,
+        "importPath": "run_inference",
+        "description": "run_inference",
+        "peekOfCode": "pub_pile_has_target = cv_table.getBooleanTopic(\"has_target\").publish()\npub_pile_size = cv_table.getIntegerTopic(\"target_pile_size\").publish()\npub_pile_score = cv_table.getDoubleTopic(\"target_pile_score\").publish()\n# Telemetry tracking for HUD\nsent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"\n# Async inference state\ninference_queue = Queue(maxsize=ASYNC_QUEUE_SIZE)\nlatest_detections = None",
+        "detail": "run_inference",
+        "documentation": {}
+    },
+    {
+        "label": "pub_pile_size",
+        "kind": 5,
+        "importPath": "run_inference",
+        "description": "run_inference",
+        "peekOfCode": "pub_pile_size = cv_table.getIntegerTopic(\"target_pile_size\").publish()\npub_pile_score = cv_table.getDoubleTopic(\"target_pile_score\").publish()\n# Telemetry tracking for HUD\nsent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"\n# Async inference state\ninference_queue = Queue(maxsize=ASYNC_QUEUE_SIZE)\nlatest_detections = None\ndetection_lock = threading.Lock()",
+        "detail": "run_inference",
+        "documentation": {}
+    },
+    {
+        "label": "pub_pile_score",
+        "kind": 5,
+        "importPath": "run_inference",
+        "description": "run_inference",
+        "peekOfCode": "pub_pile_score = cv_table.getDoubleTopic(\"target_pile_score\").publish()\n# Telemetry tracking for HUD\nsent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"\n# Async inference state\ninference_queue = Queue(maxsize=ASYNC_QUEUE_SIZE)\nlatest_detections = None\ndetection_lock = threading.Lock()\ndef open_camera(index):",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -504,7 +862,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "sent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))\ndef create_radar_frame(detections, best_idx):\n    radar = np.zeros((RADAR_HEIGHT, RADAR_WIDTH, 3), dtype=np.uint8)\n    origin_x, origin_y = RADAR_WIDTH // 2, RADAR_HEIGHT - 50\n    cv2.rectangle(radar, (origin_x-10, origin_y-10), (origin_x+10, origin_y+10), (0, 255, 0), -1)\n    for r in range(50, 250, 50):",
+        "peekOfCode": "sent_angle = 0.0\nsent_dist = 0.0\ntarget_status = \"SEARCHING...\"\n# Async inference state\ninference_queue = Queue(maxsize=ASYNC_QUEUE_SIZE)\nlatest_detections = None\ndetection_lock = threading.Lock()\ndef open_camera(index):\n    backend_candidates = []\n    if sys.platform.startswith(\"linux\"):",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -513,7 +871,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "sent_dist = 0.0\ntarget_status = \"SEARCHING...\"\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))\ndef create_radar_frame(detections, best_idx):\n    radar = np.zeros((RADAR_HEIGHT, RADAR_WIDTH, 3), dtype=np.uint8)\n    origin_x, origin_y = RADAR_WIDTH // 2, RADAR_HEIGHT - 50\n    cv2.rectangle(radar, (origin_x-10, origin_y-10), (origin_x+10, origin_y+10), (0, 255, 0), -1)\n    for r in range(50, 250, 50):\n        cv2.circle(radar, (origin_x, origin_y), int(r * GRID_SCALE), (50, 50, 50), 1)",
+        "peekOfCode": "sent_dist = 0.0\ntarget_status = \"SEARCHING...\"\n# Async inference state\ninference_queue = Queue(maxsize=ASYNC_QUEUE_SIZE)\nlatest_detections = None\ndetection_lock = threading.Lock()\ndef open_camera(index):\n    backend_candidates = []\n    if sys.platform.startswith(\"linux\"):\n        backend_candidates = [cv2.CAP_V4L2, cv2.CAP_ANY]",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -522,7 +880,43 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "target_status = \"SEARCHING...\"\ncap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))\ndef create_radar_frame(detections, best_idx):\n    radar = np.zeros((RADAR_HEIGHT, RADAR_WIDTH, 3), dtype=np.uint8)\n    origin_x, origin_y = RADAR_WIDTH // 2, RADAR_HEIGHT - 50\n    cv2.rectangle(radar, (origin_x-10, origin_y-10), (origin_x+10, origin_y+10), (0, 255, 0), -1)\n    for r in range(50, 250, 50):\n        cv2.circle(radar, (origin_x, origin_y), int(r * GRID_SCALE), (50, 50, 50), 1)\n    for i, d in enumerate(detections):",
+        "peekOfCode": "target_status = \"SEARCHING...\"\n# Async inference state\ninference_queue = Queue(maxsize=ASYNC_QUEUE_SIZE)\nlatest_detections = None\ndetection_lock = threading.Lock()\ndef open_camera(index):\n    backend_candidates = []\n    if sys.platform.startswith(\"linux\"):\n        backend_candidates = [cv2.CAP_V4L2, cv2.CAP_ANY]\n    elif sys.platform.startswith(\"win\"):",
+        "detail": "run_inference",
+        "documentation": {}
+    },
+    {
+        "label": "inference_queue",
+        "kind": 5,
+        "importPath": "run_inference",
+        "description": "run_inference",
+        "peekOfCode": "inference_queue = Queue(maxsize=ASYNC_QUEUE_SIZE)\nlatest_detections = None\ndetection_lock = threading.Lock()\ndef open_camera(index):\n    backend_candidates = []\n    if sys.platform.startswith(\"linux\"):\n        backend_candidates = [cv2.CAP_V4L2, cv2.CAP_ANY]\n    elif sys.platform.startswith(\"win\"):\n        backend_candidates = [cv2.CAP_DSHOW, cv2.CAP_MSMF, cv2.CAP_ANY]\n    else:",
+        "detail": "run_inference",
+        "documentation": {}
+    },
+    {
+        "label": "latest_detections",
+        "kind": 5,
+        "importPath": "run_inference",
+        "description": "run_inference",
+        "peekOfCode": "latest_detections = None\ndetection_lock = threading.Lock()\ndef open_camera(index):\n    backend_candidates = []\n    if sys.platform.startswith(\"linux\"):\n        backend_candidates = [cv2.CAP_V4L2, cv2.CAP_ANY]\n    elif sys.platform.startswith(\"win\"):\n        backend_candidates = [cv2.CAP_DSHOW, cv2.CAP_MSMF, cv2.CAP_ANY]\n    else:\n        backend_candidates = [cv2.CAP_ANY]",
+        "detail": "run_inference",
+        "documentation": {}
+    },
+    {
+        "label": "detection_lock",
+        "kind": 5,
+        "importPath": "run_inference",
+        "description": "run_inference",
+        "peekOfCode": "detection_lock = threading.Lock()\ndef open_camera(index):\n    backend_candidates = []\n    if sys.platform.startswith(\"linux\"):\n        backend_candidates = [cv2.CAP_V4L2, cv2.CAP_ANY]\n    elif sys.platform.startswith(\"win\"):\n        backend_candidates = [cv2.CAP_DSHOW, cv2.CAP_MSMF, cv2.CAP_ANY]\n    else:\n        backend_candidates = [cv2.CAP_ANY]\n    for backend in backend_candidates:",
+        "detail": "run_inference",
+        "documentation": {}
+    },
+    {
+        "label": "camera_indexes",
+        "kind": 5,
+        "importPath": "run_inference",
+        "description": "run_inference",
+        "peekOfCode": "camera_indexes = [CAMERA_INDEX] + [idx for idx in CAMERA_INDEX_CANDIDATES if idx != CAMERA_INDEX]\ncap = None\nfor idx in camera_indexes:\n    cap = open_camera(idx)\n    if cap is not None and cap.isOpened():\n        CAMERA_INDEX = idx\n        # Optimize camera settings for low-latency on Kangaroo\n        cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)  # Minimize buffer lag\n        print(f\"Camera opened at index {CAMERA_INDEX}\")\n        break",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -531,7 +925,7 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "cap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)\nfocal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))\ndef create_radar_frame(detections, best_idx):\n    radar = np.zeros((RADAR_HEIGHT, RADAR_WIDTH, 3), dtype=np.uint8)\n    origin_x, origin_y = RADAR_WIDTH // 2, RADAR_HEIGHT - 50\n    cv2.rectangle(radar, (origin_x-10, origin_y-10), (origin_x+10, origin_y+10), (0, 255, 0), -1)\n    for r in range(50, 250, 50):\n        cv2.circle(radar, (origin_x, origin_y), int(r * GRID_SCALE), (50, 50, 50), 1)\n    for i, d in enumerate(detections):\n        # Radar drawing still uses inches for display",
+        "peekOfCode": "cap = None\nfor idx in camera_indexes:\n    cap = open_camera(idx)\n    if cap is not None and cap.isOpened():\n        CAMERA_INDEX = idx\n        # Optimize camera settings for low-latency on Kangaroo\n        cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)  # Minimize buffer lag\n        print(f\"Camera opened at index {CAMERA_INDEX}\")\n        break\nif cap is None or not cap.isOpened():",
         "detail": "run_inference",
         "documentation": {}
     },
@@ -540,8 +934,53 @@
         "kind": 5,
         "importPath": "run_inference",
         "description": "run_inference",
-        "peekOfCode": "focal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))\ndef create_radar_frame(detections, best_idx):\n    radar = np.zeros((RADAR_HEIGHT, RADAR_WIDTH, 3), dtype=np.uint8)\n    origin_x, origin_y = RADAR_WIDTH // 2, RADAR_HEIGHT - 50\n    cv2.rectangle(radar, (origin_x-10, origin_y-10), (origin_x+10, origin_y+10), (0, 255, 0), -1)\n    for r in range(50, 250, 50):\n        cv2.circle(radar, (origin_x, origin_y), int(r * GRID_SCALE), (50, 50, 50), 1)\n    for i, d in enumerate(detections):\n        # Radar drawing still uses inches for display\n        px = int(origin_x - (d['y_in'] * GRID_SCALE)) # Y in code is side-to-side",
+        "peekOfCode": "focal_length_px = FRAME_WIDTH / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))\nframe_center_x = FRAME_WIDTH / 2\ndef create_radar_frame(detections, best_idx):\n    radar = np.zeros((RADAR_HEIGHT, RADAR_WIDTH, 3), dtype=np.uint8)\n    origin_x, origin_y = RADAR_WIDTH // 2, RADAR_HEIGHT - 50\n    cv2.rectangle(radar, (origin_x-10, origin_y-10), (origin_x+10, origin_y+10), (0, 255, 0), -1)\n    for r in range(50, 250, 50):\n        cv2.circle(radar, (origin_x, origin_y), int(r * GRID_SCALE), (50, 50, 50), 1)\n    for i, d in enumerate(detections):\n        px = int(origin_x - (d['y_in'] * GRID_SCALE))",
         "detail": "run_inference",
+        "documentation": {}
+    },
+    {
+        "label": "frame_center_x",
+        "kind": 5,
+        "importPath": "run_inference",
+        "description": "run_inference",
+        "peekOfCode": "frame_center_x = FRAME_WIDTH / 2\ndef create_radar_frame(detections, best_idx):\n    radar = np.zeros((RADAR_HEIGHT, RADAR_WIDTH, 3), dtype=np.uint8)\n    origin_x, origin_y = RADAR_WIDTH // 2, RADAR_HEIGHT - 50\n    cv2.rectangle(radar, (origin_x-10, origin_y-10), (origin_x+10, origin_y+10), (0, 255, 0), -1)\n    for r in range(50, 250, 50):\n        cv2.circle(radar, (origin_x, origin_y), int(r * GRID_SCALE), (50, 50, 50), 1)\n    for i, d in enumerate(detections):\n        px = int(origin_x - (d['y_in'] * GRID_SCALE))\n        py = int(origin_y - (d['x_in'] * GRID_SCALE))",
+        "detail": "run_inference",
+        "documentation": {}
+    },
+    {
+        "label": "inference_thread",
+        "kind": 5,
+        "importPath": "run_inference",
+        "description": "run_inference",
+        "peekOfCode": "inference_thread = threading.Thread(target=inference_worker, daemon=True)\ninference_thread.start()\nprint(\"Async inference worker started\")\nprint(f\"Clustering enabled: {ENABLE_CLUSTERING} | Intake width: {INTAKE_WIDTH_INCHES}\\\"\")\nprint(f\"Wall filter: {MIN_DIST_FROM_WALL_IN}\\\" | Max reach: {MAX_REACH_METERS}m | Confidence: {CONFIDENCE_FILTER}\")\nprint(f\"Inference decimation: 1/{INFERENCE_DECIMATION} | Network throttle: 1/{NT_THROTTLE_FACTOR}\")\n# ==========================================\n# MAIN LOOP\n# ==========================================\nframe_count = 0",
+        "detail": "run_inference",
+        "documentation": {}
+    },
+    {
+        "label": "frame_count",
+        "kind": 5,
+        "importPath": "run_inference",
+        "description": "run_inference",
+        "peekOfCode": "frame_count = 0\nperf_timer = time.time()\ntry:\n    while True:\n        ret, frame = cap.read()\n        if not ret:\n            break\n        frame = cv2.resize(frame, (FRAME_WIDTH, FRAME_HEIGHT))\n        # Queue frame for async inference (decimated to save CPU)\n        if frame_count % INFERENCE_DECIMATION == 0:",
+        "detail": "run_inference",
+        "documentation": {}
+    },
+    {
+        "label": "perf_timer",
+        "kind": 5,
+        "importPath": "run_inference",
+        "description": "run_inference",
+        "peekOfCode": "perf_timer = time.time()\ntry:\n    while True:\n        ret, frame = cap.read()\n        if not ret:\n            break\n        frame = cv2.resize(frame, (FRAME_WIDTH, FRAME_HEIGHT))\n        # Queue frame for async inference (decimated to save CPU)\n        if frame_count % INFERENCE_DECIMATION == 0:\n            try:",
+        "detail": "run_inference",
+        "documentation": {}
+    },
+    {
+        "label": "open_camera",
+        "kind": 2,
+        "importPath": "test_camera",
+        "description": "test_camera",
+        "peekOfCode": "def open_camera(index):\n    backend_candidates = []\n    if sys.platform.startswith(\"linux\"):\n        backend_candidates = [cv2.CAP_V4L2, cv2.CAP_ANY]\n    elif sys.platform.startswith(\"win\"):\n        backend_candidates = [cv2.CAP_DSHOW, cv2.CAP_MSMF, cv2.CAP_ANY]\n    else:\n        backend_candidates = [cv2.CAP_ANY]\n    for backend in backend_candidates:\n        cap = cv2.VideoCapture(index, backend)",
+        "detail": "test_camera",
         "documentation": {}
     },
     {
@@ -549,7 +988,7 @@
         "kind": 2,
         "importPath": "test_camera",
         "description": "test_camera",
-        "peekOfCode": "def test_camera_index(index):\n    print(f\"\\n📹 Testing Camera Index {index}...\")\n    try:\n        cap = cv2.VideoCapture(index, cv2.CAP_DSHOW)  # Use DirectShow on Windows\n        if not cap.isOpened():\n            print(f\" Could not open camera at index {index}.\")\n            cap.release()\n            return False\n        print(f\"✓ Camera device opened at index {index}\")\n        ret, frame = cap.read()",
+        "peekOfCode": "def test_camera_index(index):\n    print(f\"\\n📹 Testing Camera Index {index}...\")\n    try:\n        cap, backend = open_camera(index)\n        if cap is None:\n            print(f\" Could not open camera at index {index}.\")\n            return False\n        print(f\"✓ Camera device opened at index {index} (backend={backend})\")\n        ret, frame = cap.read()\n        if not ret or frame is None:",
         "detail": "test_camera",
         "documentation": {}
     },
