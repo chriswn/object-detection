@@ -1,3 +1,8 @@
+import os
+
+os.environ.setdefault("PYTORCH_DISABLE_NNPACK", "1")
+os.environ.setdefault("TORCH_CPP_LOG_LEVEL", "ERROR")
+
 import cv2
 import numpy as np
 from ultralytics import YOLO
@@ -16,7 +21,12 @@ except Exception as exc:
 # CONFIGURATION
 # ==========================================
 MODEL_PATH = 'models/best.pt'
-CAMERA_INDEX = 1
+CAMERA_INDEX = int(os.getenv("CAMERA_INDEX", "0"))
+CAMERA_INDEX_CANDIDATES = [
+    int(i.strip())
+    for i in os.getenv("CAMERA_INDEX_CANDIDATES", "0,1,2").split(",")
+    if i.strip().isdigit()
+]
 CONFIDENCE_THRESHOLD = 0.65
 
 # --- NETWORK SETUP ---
@@ -32,6 +42,11 @@ INCHES_TO_METERS = 0.0254
 RADAR_WIDTH = 500
 RADAR_HEIGHT = 500
 GRID_SCALE = 4.0 
+
+FRAME_WIDTH = 320
+FRAME_HEIGHT = 240
+
+HEADLESS = os.getenv("VISION_HEADLESS", "").lower() in {"1", "true", "yes", "on"} or not bool(os.getenv("DISPLAY"))
 
 # ==========================================
 # INITIALIZATION
@@ -63,15 +78,38 @@ sent_angle = 0.0
 sent_dist = 0.0
 target_status = "SEARCHING..."
 
-if sys.platform.startswith("linux"):
-    cap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_V4L2)
-else:
-    cap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)
+def open_camera(index):
+    backend_candidates = []
+    if sys.platform.startswith("linux"):
+        backend_candidates = [cv2.CAP_V4L2, cv2.CAP_ANY]
+    elif sys.platform.startswith("win"):
+        backend_candidates = [cv2.CAP_DSHOW, cv2.CAP_MSMF, cv2.CAP_ANY]
+    else:
+        backend_candidates = [cv2.CAP_ANY]
 
-if not cap.isOpened():
-    cap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_ANY)
+    for backend in backend_candidates:
+        cap_local = cv2.VideoCapture(index, backend)
+        if cap_local.isOpened():
+            return cap_local
+        cap_local.release()
 
-focal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))
+    return None
+
+
+camera_indexes = [CAMERA_INDEX] + [idx for idx in CAMERA_INDEX_CANDIDATES if idx != CAMERA_INDEX]
+cap = None
+for idx in camera_indexes:
+    cap = open_camera(idx)
+    if cap is not None and cap.isOpened():
+        CAMERA_INDEX = idx
+        print(f"Camera opened at index {CAMERA_INDEX}")
+        break
+
+if cap is None or not cap.isOpened():
+    raise RuntimeError(f"Unable to open camera. Tried indexes: {camera_indexes}")
+
+focal_length_px = FRAME_WIDTH / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))
+frame_center_x = FRAME_WIDTH / 2
 
 def create_radar_frame(detections, best_idx):
     radar = np.zeros((RADAR_HEIGHT, RADAR_WIDTH, 3), dtype=np.uint8)
@@ -95,7 +133,7 @@ def create_radar_frame(detections, best_idx):
 while True:
     ret, frame = cap.read()
     if not ret: break
-    frame = cv2.resize(frame, (640, 480))
+    frame = cv2.resize(frame, (FRAME_WIDTH, FRAME_HEIGHT))
     results = model(frame, verbose=False)
     
     yaws_rad, dists_m, xs_m, ys_m = [], [], [], []
@@ -112,7 +150,7 @@ while True:
                 w_px = x2 - x1
                 
                 # 1. Math for Angle & Total Distance
-                yaw_rad = math.atan((cx - 320) / focal_length_px)
+                yaw_rad = math.atan((cx - frame_center_x) / focal_length_px)
                 dist_total_in = (KNOWN_FUEL_DIAMETER_IN * focal_length_px) / w_px if w_px > 0 else 0
                 
                 # 2. COORDINATE MATH (Matches your Java snippet)
@@ -169,10 +207,13 @@ while True:
         color = (0, 0, 255) if i == best_idx else (0, 255, 0)
         cv2.rectangle(frame, d['box'][0:2], d['box'][2:4], color, 2)
 
-    cv2.imshow('Robot Camera', frame)
-    cv2.imshow('2D Radar Map', create_radar_frame(screen_detections, best_idx))
+    if not HEADLESS:
+        cv2.imshow('Robot Camera', frame)
+        cv2.imshow('2D Radar Map', create_radar_frame(screen_detections, best_idx))
 
-    if cv2.waitKey(1) & 0xFF == ord('q'): break
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
 
 cap.release()
-cv2.destroyAllWindows()
+if not HEADLESS:
+    cv2.destroyAllWindows()

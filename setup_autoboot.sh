@@ -15,6 +15,15 @@ YELLOW='\033[1;33m'
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 
+if [ -x "${PROJECT_DIR}/.venv314/bin/python3" ]; then
+    PYTHON_BIN="${PROJECT_DIR}/.venv314/bin/python3"
+elif [ -x "${PROJECT_DIR}/.venv/bin/python3" ]; then
+    PYTHON_BIN="${PROJECT_DIR}/.venv/bin/python3"
+else
+    echo -e "${RED}✗ Python interpreter not found in .venv314 or .venv${NC}"
+    exit 1
+fi
+
 echo -e "${YELLOW}FRC YOLO Vision Auto-Boot Setup${NC}"
 echo "=================================="
 
@@ -33,8 +42,12 @@ Description=FRC YOLO Vision
 After=network.target
 
 [Service]
-ExecStart=${PROJECT_DIR}/.venv/bin/python3 ${PROJECT_DIR}/${PYTHON_SCRIPT}
+ExecStart=${PYTHON_BIN} ${PROJECT_DIR}/${PYTHON_SCRIPT}
 WorkingDirectory=${PROJECT_DIR}
+Environment=PYTORCH_DISABLE_NNPACK=1
+Environment=VISION_HEADLESS=1
+Environment=CAMERA_INDEX=0
+Environment=CAMERA_INDEX_CANDIDATES=0,1,2
 StandardOutput=journal
 StandardError=journal
 Restart=always

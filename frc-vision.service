@@ -3,8 +3,13 @@ Description=FRC YOLO Vision
 After=network.target
 
 [Service]
-ExecStart=/home/pcpirates/Desktop/object-detection/.venv/bin/python3 /home/pcpirates/Desktop/object-detection/run_inference.py
+ExecStart=/home/pcpirates/Desktop/object-detection/.venv314/bin/python3 /home/pcpirates/Desktop/object-detection/run_inference.py
 WorkingDirectory=/home/pcpirates/Desktop/object-detection
+Environment=PYTORCH_DISABLE_NNPACK=1
+Environment=TORCH_CPP_LOG_LEVEL=ERROR
+Environment=VISION_HEADLESS=1
+Environment=CAMERA_INDEX=0
+Environment=CAMERA_INDEX_CANDIDATES=0,1,2
 StandardOutput=journal
 StandardError=journal
 Restart=always
