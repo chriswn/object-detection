@@ -16,7 +16,7 @@ except Exception as exc:
 # CONFIGURATION
 # ==========================================
 MODEL_PATH = 'models/best.pt'
-CAMERA_INDEX = 0
+CAMERA_INDEX = 1
 CONFIDENCE_THRESHOLD = 0.65
 
 # --- NETWORK SETUP ---

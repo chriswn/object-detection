@@ -1,0 +1,15 @@
+[Unit]
+Description=FRC YOLO Vision
+After=network.target
+
+[Service]
+ExecStart=/home/pcpirates/Desktop/object-detection/.venv/bin/python3 /home/pcpirates/Desktop/object-detection/run_inference.py
+WorkingDirectory=/home/pcpirates/Desktop/object-detection
+StandardOutput=journal
+StandardError=journal
+Restart=always
+RestartSec=10
+User=pcpirates
+
+[Install]
+WantedBy=multi-user.target
