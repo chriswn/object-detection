@@ -2,8 +2,15 @@ import cv2
 import numpy as np
 from ultralytics import YOLO
 import math
-import ntcore
 import time
+import sys
+
+try:
+    from ntcore import NetworkTableInstance
+except Exception as exc:
+    raise ImportError(
+        "WPILib NTCore not available. Install 'pyntcore' and remove conflicting 'ntcore' package."
+    ) from exc
 
 # ==========================================
 # CONFIGURATION
@@ -32,7 +39,7 @@ GRID_SCALE = 4.0
 print("Starting FRC Vision Master Script...")
 model = YOLO(MODEL_PATH)
 
-inst = ntcore.NetworkTableInstance.getDefault()
+inst = NetworkTableInstance.getDefault()
 if IS_SIMULATION:
     inst.setServer("127.0.0.1")
 else:
@@ -56,7 +63,14 @@ sent_angle = 0.0
 sent_dist = 0.0
 target_status = "SEARCHING..."
 
-cap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)
+if sys.platform.startswith("linux"):
+    cap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_V4L2)
+else:
+    cap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_DSHOW)
+
+if not cap.isOpened():
+    cap = cv2.VideoCapture(CAMERA_INDEX, cv2.CAP_ANY)
+
 focal_length_px = 640 / (2 * math.tan(math.radians(CAMERA_HFOV_DEG / 2)))
 
 def create_radar_frame(detections, best_idx):

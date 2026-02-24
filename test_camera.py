@@ -1,6 +1,24 @@
 import cv2
 import sys
 
+
+def open_camera(index):
+    backend_candidates = []
+    if sys.platform.startswith("linux"):
+        backend_candidates = [cv2.CAP_V4L2, cv2.CAP_ANY]
+    elif sys.platform.startswith("win"):
+        backend_candidates = [cv2.CAP_DSHOW, cv2.CAP_MSMF, cv2.CAP_ANY]
+    else:
+        backend_candidates = [cv2.CAP_ANY]
+
+    for backend in backend_candidates:
+        cap = cv2.VideoCapture(index, backend)
+        if cap.isOpened():
+            return cap, backend
+        cap.release()
+
+    return None, None
+
 print("=" * 50)
 print("Camera Test Script Starting...")
 print(f"OpenCV Version: {cv2.__version__}")
@@ -10,14 +28,13 @@ def test_camera_index(index):
     print(f"\n📹 Testing Camera Index {index}...")
     
     try:
-        cap = cv2.VideoCapture(index, cv2.CAP_DSHOW)  # Use DirectShow on Windows
+        cap, backend = open_camera(index)
         
-        if not cap.isOpened():
+        if cap is None:
             print(f" Could not open camera at index {index}.")
-            cap.release()
             return False
         
-        print(f"✓ Camera device opened at index {index}")
+        print(f"✓ Camera device opened at index {index} (backend={backend})")
         
         ret, frame = cap.read()
         if not ret or frame is None:
