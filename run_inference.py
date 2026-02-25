@@ -72,7 +72,7 @@ FRAME_HEIGHT = 240
 # --- ASYNC INFERENCE SETTINGS ---
 ASYNC_QUEUE_SIZE = 2  # Keep pipeline short to avoid lag on slow hardware
 INFERENCE_THREAD_PRIORITY = -10  # Lower priority to avoid starving camera thread
-INFERENCE_DECIMATION = 2  # Run inference every Nth frame (1=every frame, 2=every other)
+INFERENCE_DECIMATION = 3  # Run inference every Nth frame (1=every frame, 2=every other)
 
 HEADLESS = True  # Set to True to disable GUI on Kangaroo
 
