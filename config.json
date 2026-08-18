@@ -1,0 +1,72 @@
+{
+  "_comment": "FRC Vision Pipeline Config — Update this file for each new game season.",
+
+  "game": {
+    "season_year": 2026,
+    "game_name": "Reefscape",
+
+    "_comment_target_classes": "List of class names your trained model uses for the current game piece. Case-insensitive.",
+    "target_classes": ["fuel", "fuels", "ball"],
+
+    "_comment_known_diameter": "Approximate largest dimension of the game piece in inches (used for distance estimation).",
+    "known_piece_diameter_in": 5.91,
+
+    "_comment_aspect_ratio": "Bounding-box aspect ratio (w/h) limits. Detections outside [min, max] are discarded as false positives.",
+    "aspect_ratio_min": 0.4,
+    "aspect_ratio_max": 2.5
+  },
+
+  "field": {
+    "_comment": "2026 Reefscape field dimensions in meters for out-of-bounds sanity checks.",
+    "width_m": 16.54,
+    "height_m": 8.02
+  },
+
+  "robot": {
+    "camera_hfov_deg": 60.0,
+    "intake_width_inches": 12.0,
+    "max_reach_meters": 3.0,
+    "min_dist_from_wall_in": 8.0
+  },
+
+  "pipeline": {
+    "use_openvino": true,
+    "use_gpu": false,
+    "use_fp16": true,
+    "headless": true,
+    "frame_width": 320,
+    "frame_height": 240,
+    "confidence_filter": 0.67,
+    "inference_decimation": 3,
+    "nt_throttle_factor": 2,
+    "async_queue_size": 2
+  },
+
+  "clustering": {
+    "enabled": true,
+    "cluster_radius_in": 12.0,
+    "pile_priority_weight": 50
+  },
+
+  "network": {
+    "is_simulation": true,
+    "team_number": 3291,
+    "nt_client_name": "KangarooVision"
+  },
+
+  "camera": {
+    "index": 0,
+    "index_candidates": [0, 1, 2]
+  },
+
+  "model": {
+    "pt_path": "models/best.pt",
+    "openvino_path": "models/best_openvino_model"
+  },
+
+  "radar": {
+    "width": 500,
+    "height": 500,
+    "grid_scale": 4.0
+  }
+}
